@@ -11,4 +11,8 @@
     <string name="title_activity_bad">Bad</string>
 
     <string name="title_activity_very_bad">VeryBad</string>
+
+    <string name="mood_history">Get your mood history on past 7 day!</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
 </resources>

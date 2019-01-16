@@ -9,31 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".VeryBadActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_very_bad"
-            android:theme="@style/FullscreenTheme"></activity>
-        <activity
-            android:name=".BadActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_bad"
-            android:theme="@style/FullscreenTheme" />
-        <activity
-            android:name=".NormalActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_normal"
-            android:theme="@style/FullscreenTheme" />
-        <activity
-            android:name=".VeryHappyActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_very_happy"
-            android:theme="@style/FullscreenTheme" />
-        <activity
-            android:name=".MainHappyActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme">
+        <activity android:name=".controller.VeryHappyActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".controller.VeryBadActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".controller.NormalActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".controller.BadActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".controller.MainHappyActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
