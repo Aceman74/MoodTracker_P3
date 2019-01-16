@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cornflower_blue_65"
+    tools:context=".NormalActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <ImageButton
+        android:id="@+id/activity_normal_smiley_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/smiley_normal"
+        android:background="@android:color/transparent"/>
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <ImageButton
+                android:id="@+id/activity_normal_note_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_note_add_black"
+                android:layout_alignParentLeft="true"
+                android:padding="20dp"/>
+
+            <ImageButton
+                android:id="@+id/activity_normal_history_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_history_black"
+                android:layout_alignParentRight="true"
+                android:padding="20dp"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

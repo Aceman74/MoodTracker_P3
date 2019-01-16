@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MoodTracker</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_very_happy">VeryHappy</string>
+
+    <string name="title_activity_normal">Normal</string>
+
+    <string name="title_activity_bad">Bad</string>
+
+    <string name="title_activity_very_bad">VeryBad</string>
+</resources>
