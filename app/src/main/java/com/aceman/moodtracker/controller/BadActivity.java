@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -16,31 +18,37 @@ public class BadActivity extends AppCompatActivity {
 
     private float x1, x2, y1, y2;
     private FrameLayout mMainFrame;
-    private ImageButton mHappySmiley;
+    private ImageButton mSmiley;
     private ImageButton mNote;
     private ImageButton mHistory;
+    private BadActivity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bad);
         System.out.println("BadActivity:onCreate()");
+        this.mActivity = this;
 
         mMainFrame = findViewById(R.id.activity_bad_frame);
-        mHappySmiley = findViewById(R.id.activity_bad_smiley_btn);
+        mSmiley = findViewById(R.id.activity_bad_smiley_btn);
         mNote = findViewById(R.id.activity_bad_note_btn);
         mHistory = findViewById(R.id.activity_bad_history_btn);
+        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
 
-        mHappySmiley.setOnClickListener(new View.OnClickListener() {
+        mSmiley.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                mSmiley.startAnimation(shake);
             }
         });
 
         mNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                NoteActivity newNote = new NoteActivity(BadActivity.this);
+                newNote.buidNotePopup();
 
             }
         });
@@ -49,6 +57,9 @@ public class BadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent HistoryActivity = new Intent(getApplicationContext(), HistoryActivity.class);
+                startActivity(HistoryActivity);
+                overridePendingTransition(R.anim.slide_in_bot_right, R.anim.slide_out_bot_right);
             }
         });
     }

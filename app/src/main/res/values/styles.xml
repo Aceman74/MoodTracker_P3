@@ -20,4 +20,13 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@style/CustomDialogAnimation</item>
+    </style>
+
+    <style name="CustomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bot_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bot_left</item>
+    </style>
+
 </resources>

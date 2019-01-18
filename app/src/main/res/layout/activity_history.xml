@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_history_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.HistoryActivity"
+    android:orientation="vertical"
+    android:layout_weight="1"
+    android:background="@android:color/darker_gray"
+    >
+
+    <TextView
+        android:id="@+id/activity_history_one_week_txt"
+        android:background="@color/faded_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="Il y a une semaine"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="16dp"
+
+        />
+    <TextView
+        android:id="@+id/activity_history_six_day_txt"
+        android:background="@color/cornflower_blue_65"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="Il y a 6 jours"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+    <TextView
+        android:id="@+id/activity_history_five_day_txt"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="Il y a 5 jours"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+    <TextView
+        android:id="@+id/activity_history_four_day_txt"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="Il y a 4 jours"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+    <TextView
+        android:id="@+id/activity_history_three_day_txt"
+        android:background="@color/warm_grey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="Il y a 3 jours"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+    <TextView
+        android:id="@+id/activity_history_two_day_txt"
+        android:background="@color/light_sage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="Avant-hier"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+    <TextView
+        android:id="@+id/activity_history_yesterday_txt"
+        android:background="@color/banana_yellow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="Hier"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        />
+</LinearLayout>

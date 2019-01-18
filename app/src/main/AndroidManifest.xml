@@ -9,15 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.VeryHappyActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".controller.VeryBadActivity"
+        <activity android:name=".controller.NoteActivity"></activity>
+        <activity
+            android:name=".controller.HistoryActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".controller.NormalActivity"
+        <activity
+            android:name=".controller.VeryHappyActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".controller.BadActivity"
+        <activity
+            android:name=".controller.VeryBadActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".controller.MainHappyActivity"
+        <activity
+            android:name=".controller.NormalActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".controller.BadActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".controller.MainHappyActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

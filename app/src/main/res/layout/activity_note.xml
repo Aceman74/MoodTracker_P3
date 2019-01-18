@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Commentaire"
+        android:textSize="20dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Saisisez ce qui vous rend heureux ou malheureux aujourd'hui!"
+        android:textSize="16dp"
+        android:textAlignment="center"
+        android:padding="20dp"/>
+    <EditText
+        android:id="@+id/activity_note_edit_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Votre texte"
+        android:textSize="12dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|end"
+        >
+        <Button
+            android:id="@+id/activity_note_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Annuler"
+            />
+        <Button
+            android:id="@+id/activity_note_validate_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valider"/>
+    </LinearLayout>
+
+</LinearLayout>
