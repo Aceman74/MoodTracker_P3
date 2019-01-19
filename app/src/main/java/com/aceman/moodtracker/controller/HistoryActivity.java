@@ -1,19 +1,62 @@
 package com.aceman.moodtracker.controller;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListView;
 
+import com.aceman.moodtracker.model.HistoryAdapter;
 import com.aceman.moodtracker.R;
+import com.aceman.moodtracker.model.MoodSave;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static java.lang.System.out;
 
 public class HistoryActivity extends AppCompatActivity {
 
+    private SharedPreferences mMoodSavePref;
+    private List<MoodSave> MoodSaveList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+
+        loadData();
+        SharedPreferences mMoodSavePref = getSharedPreferences("mMoodSave", MODE_PRIVATE);
+        setContentView(R.layout.note_test);
         System.out.println("HistoryActivity:onCreate()");
+      //  Collections.reverse(MoodSaveList);
+        ListView MoodDayListView = findViewById(R.id.list_view);
+        MoodDayListView.setAdapter(new HistoryAdapter(this, MoodSaveList));
+
+
+    }
+
+    private void saveData(){
+        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
+        SharedPreferences.Editor editor = mMoodSavePref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(MoodSaveList);
+        editor.putString("TestList",json);
+        editor.apply();
+    }
+
+    private void loadData(){
+        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mMoodSavePref.getString("TestList", null);
+        Type type = new TypeToken<List<MoodSave>>() {}.getType();
+        MoodSaveList = gson.fromJson(json, type);
+
+        if(MoodSaveList == null){
+            MoodSaveList = new ArrayList<MoodSave>();
+        }
     }
 
     @Override

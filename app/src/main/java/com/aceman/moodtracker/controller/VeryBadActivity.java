@@ -1,6 +1,7 @@
 package com.aceman.moodtracker.controller;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -9,8 +10,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
+import com.aceman.moodtracker.model.MoodSave;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -22,6 +31,7 @@ public class VeryBadActivity extends AppCompatActivity {
     private ImageButton mNote;
     private ImageButton mHistory;
     private VeryBadActivity mActivity;
+    private List<MoodSave> MoodSaveList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +39,7 @@ public class VeryBadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_very_bad);
         System.out.println("VeryBadActivity:onCreate()");
         this.mActivity = this;
+        loadData();
 
         mMainFrame = findViewById(R.id.activity_very_bad_frame);
         mSmiley = findViewById(R.id.activity_very_bad_smiley_btn);
@@ -40,8 +51,10 @@ public class VeryBadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                MoodSaveList.add(new MoodSave("Jour 20","VeryBad", 1));
+                saveData();
                 mSmiley.startAnimation(shake);
-
+                Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
             }
         });
 
@@ -83,6 +96,27 @@ public class VeryBadActivity extends AppCompatActivity {
                 }
                 break;
         }return false;
+    }
+
+    private void saveData(){
+        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
+        SharedPreferences.Editor editor = mMoodSavePref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(MoodSaveList);
+        editor.putString("TestList",json);
+        editor.apply();
+    }
+
+    private void loadData(){
+        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mMoodSavePref.getString("TestList", null);
+        Type type = new TypeToken<List<MoodSave>>() {}.getType();
+        MoodSaveList = gson.fromJson(json, type);
+
+        if(MoodSaveList == null){
+            MoodSaveList = new ArrayList<MoodSave>();
+        }
     }
 
     @Override

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mood_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/history_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Il y a une semaine"
+            android:layout_gravity="start"/>
+        <TextView
+    android:id="@+id/history_mood_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Il y a une semaine"
+    android:layout_gravity="start"/>
+
+        <ImageButton
+            android:id="@+id/history_comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:src="@drawable/ic_comment_black_48px"
+            android:background="@android:color/transparent"/>
+
+
+
+
+</LinearLayout>

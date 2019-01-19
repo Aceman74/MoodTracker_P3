@@ -19,4 +19,12 @@
     <string name="Add_Note">Tell why you feel like this today !</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="one_week">Il y a une semaine</string>
+    <string name="six_day">Il y a 6 jours</string>
+    <string name="five_day">Il y a 5 jours</string>
+    <string name="four_day">Il y a 4 jours</string>
+    <string name="three_day">Il y a 3 jours</string>
+    <string name="yesterday">Hier</string>
+    <string name="two_day">Avant-hier</string>
+    <string name="show_note_of_the_day">Show Note of the day</string>
 </resources>

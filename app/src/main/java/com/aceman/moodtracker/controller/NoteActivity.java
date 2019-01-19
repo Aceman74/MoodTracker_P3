@@ -51,7 +51,7 @@ public class NoteActivity extends Dialog {
             @Override
             public void onClick(View v) {
                 String dayNote = mWriteText.getText().toString();
-                setMText("Humeur sauvegardée");
+                setMText("Humeur sauvegardée!");
                 customToast();
                 hide();
             }
