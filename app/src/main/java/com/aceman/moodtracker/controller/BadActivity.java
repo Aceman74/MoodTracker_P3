@@ -2,8 +2,8 @@ package com.aceman.moodtracker.controller;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -18,11 +18,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
+
 
 import static com.aceman.moodtracker.controller.NoteActivity.mAddNote;
 import static com.aceman.moodtracker.controller.NoteActivity.mIsNote;
+import static com.aceman.moodtracker.model.MoodSave.Today;
 import static java.lang.System.out;
 
 public class BadActivity extends AppCompatActivity {
@@ -40,20 +41,18 @@ public class BadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bad);
         System.out.println("BadActivity:onCreate()");
+        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
         this.mActivity = this;
         loadData();
-
         mMainFrame = findViewById(R.id.activity_bad_frame);
         mSmiley = findViewById(R.id.activity_bad_smiley_btn);
         mNote = findViewById(R.id.activity_bad_note_btn);
         mHistory = findViewById(R.id.activity_bad_history_btn);
-        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
-
         mSmiley.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                MoodSaveList.add(new MoodSave("Jour 10","Bad", mIsNote, mAddNote));
+                MoodSaveList.add(7, new MoodSave(Today(),"Bad", mIsNote,mAddNote));
                 saveData();
                 mSmiley.startAnimation(shake);
                 Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
@@ -122,9 +121,6 @@ public class BadActivity extends AppCompatActivity {
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
         MoodSaveList = gson.fromJson(json, type);
 
-        if(MoodSaveList == null){
-            MoodSaveList = new ArrayList<MoodSave>();
-        }
     }
 
     @Override

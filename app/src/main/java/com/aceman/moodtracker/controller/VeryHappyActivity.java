@@ -18,11 +18,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.aceman.moodtracker.controller.NoteActivity.mAddNote;
 import static com.aceman.moodtracker.controller.NoteActivity.mIsNote;
+import static com.aceman.moodtracker.model.MoodSave.Today;
 import static java.lang.System.out;
 
 public class VeryHappyActivity extends AppCompatActivity {
@@ -40,20 +40,18 @@ public class VeryHappyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_very_happy);
         System.out.println("VeryHappyActivity:onCreate()");
+        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
         this.mActivity = this;
         loadData();
-
         mMainFrame = findViewById(R.id.activity_very_happy_frame);
         mSmiley = findViewById(R.id.activity_very_happy_smiley_btn);
         mNote = findViewById(R.id.activity_very_happy_note_btn);
         mHistory = findViewById(R.id.activity_very_happy_history_btn);
-        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
-
         mSmiley.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                MoodSaveList.add(new MoodSave("Jour 7","VeryHappy",mIsNote, mAddNote));
+                MoodSaveList.add(7, new MoodSave(Today(),"VeryHappy", mIsNote,mAddNote));
                 saveData();
                 mSmiley.startAnimation(shake);
                 Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
@@ -115,10 +113,6 @@ public class VeryHappyActivity extends AppCompatActivity {
         String json = mMoodSavePref.getString("TestList", null);
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
         MoodSaveList = gson.fromJson(json, type);
-
-        if(MoodSaveList == null){
-            MoodSaveList = new ArrayList<MoodSave>();
-        }
     }
 
     @Override

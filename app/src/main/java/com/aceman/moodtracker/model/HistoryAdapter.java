@@ -14,6 +14,8 @@ import com.aceman.moodtracker.R;
 
 import java.util.List;
 
+import static com.aceman.moodtracker.model.MoodSave.Today;
+
 
 /**
  * Created by Lionel JOFFRAY - on 18/01/2019.
@@ -53,7 +55,7 @@ public class HistoryAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.adapter_history, null);
 
         MoodSave actualItem = (MoodSave) getItem(i);
-        String Day = actualItem.getDay();
+        int Day = actualItem.getDay();
         String Mood = actualItem.getMood();
         Boolean Note = actualItem.getNote();
         String NoteWrite = actualItem.getAddNote();
@@ -62,7 +64,8 @@ public class HistoryAdapter extends BaseAdapter {
         TextView MoodView = view.findViewById(R.id.history_mood_text);
         LinearLayout HistoryBack = view.findViewById(R.id.mood_color);
         ImageButton NoteBtn = view.findViewById(R.id.history_comment_btn);
-        DayView.setText(Day);
+        SetDayOfWeek(Day,DayView);
+        // DayView.setText(Day);
         MoodView.setText(Mood);
         DayView.setHeight(200);
         NoteShow(Note,NoteWrite,NoteBtn);
@@ -112,5 +115,24 @@ public class HistoryAdapter extends BaseAdapter {
 
         }
 
+    }
+
+    private void SetDayOfWeek(int Day,TextView DayView ){
+
+        if(Day == Today()-1){
+            DayView.setText("Hier");
+        }if(Day == Today()-2){
+            DayView.setText("Avant-hier");
+        }if(Day == Today()-3){
+            DayView.setText("Il y a 3 jours");
+        }if(Day == Today()-4){
+            DayView.setText("Il y a 4 jours");
+        }if(Day == Today()-5){
+            DayView.setText("Il y a 5 jours");
+        }if(Day == Today()-6){
+            DayView.setText("Il y a 6 jours");
+        }if(Day == Today()-7){
+            DayView.setText("Il y a une semaine");
+        }
     }
 }

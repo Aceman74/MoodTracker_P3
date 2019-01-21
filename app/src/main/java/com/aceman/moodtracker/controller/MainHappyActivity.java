@@ -19,12 +19,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static com.aceman.moodtracker.controller.NoteActivity.mAddNote;
 import static com.aceman.moodtracker.controller.NoteActivity.mIsNote;
-import static com.aceman.moodtracker.model.MoodSave.CheckDay;
+import static com.aceman.moodtracker.model.MoodSave.Today;
 import static java.lang.System.out;
 
 public class MainHappyActivity extends AppCompatActivity {
@@ -36,28 +35,29 @@ public class MainHappyActivity extends AppCompatActivity {
     private ImageButton mHistory;
     private MainHappyActivity mActivity;
     private SharedPreferences mMoodSavePref;
+    private SharedPreferences mFirstLaunchToday;
     private List<MoodSave> MoodSaveList;
+    public int mLastDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_happy);
         System.out.println("MainHappyActivity:onCreate()");
+        final Animation shake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake_anim);
         this.mActivity = this;
         loadData();
-
         mMainFrame = findViewById(R.id.activity_main_frame);
         mSmiley = findViewById(R.id.activity_main_happy_smiley_btn);
         mNote = findViewById(R.id.activity_main_happy_note_btn);
         mHistory = findViewById(R.id.activity_main_happy_history_btn);
-        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
-
 
         mSmiley.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
 
-                MoodSaveList.add(CheckDay(), new MoodSave(MoodSave.getActualDay(),"Happy", mIsNote,mAddNote));
+            public void onClick(View v) {
+                MoodSaveList.remove(7);
+                MoodSaveList.add(7, new MoodSave(Today(),"Happy", mIsNote,mAddNote));
 
              //   Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
                 saveData();
@@ -86,7 +86,22 @@ public class MainHappyActivity extends AppCompatActivity {
         });
     }
 
+    private boolean CheckLaunchToday() {
+        if(Today() != mLastDay){
+            mLastDay=Today();
+            return true;
+        }
+        else
+            return false;
+
+    }
+
     private void saveData(){
+
+        SharedPreferences mFirstLaunchToday = getSharedPreferences("LaunchToday",MODE_PRIVATE);
+        SharedPreferences.Editor firstLaunch = mFirstLaunchToday.edit();
+        firstLaunch.putInt("IsFirstLaunchToday",mLastDay);
+        firstLaunch.apply();
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         SharedPreferences.Editor editor = mMoodSavePref.edit();
         Gson gson = new Gson();
@@ -96,23 +111,39 @@ public class MainHappyActivity extends AppCompatActivity {
     }
 
     private void loadData(){
+
+        SharedPreferences mFirstLaunchToday = getSharedPreferences("LaunchToday",MODE_PRIVATE);
+        mLastDay = mFirstLaunchToday.getInt("IsFirstLaunchToday",mLastDay);
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mMoodSavePref.getString("TestList", null);
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
         MoodSaveList = gson.fromJson(json, type);
+        CheckLaunchToday();
 
         if(MoodSaveList == null){
             MoodSaveList = new ArrayList<MoodSave>();
-            MoodSaveList.add(0,new MoodSave("Lundi","Happy", false,null));
-            MoodSaveList.add(1,new MoodSave("Mardi","Happy", false,null));
-            MoodSaveList.add(2,new MoodSave("Mercredi","Happy", false,null));
-            MoodSaveList.add(3,new MoodSave("Jeudi","Happy", false,null));
-            MoodSaveList.add(4,new MoodSave("Vendredi","Happy", false,null));
-            MoodSaveList.add(5,new MoodSave("Samedi","Happy", false,null));
-            MoodSaveList.add(6,new MoodSave("Dimanche","Happy", false,null));
-            MoodSaveList.add(7,new MoodSave(null,null, false,null));
+            MoodSaveList.add(0,new MoodSave(Today()-7,"VeryBad", false,null));
+            MoodSaveList.add(1,new MoodSave(Today()-6,"Bad", true,"Mauvaise journée!"));
+            MoodSaveList.add(2,new MoodSave(Today()-5,"Normal", false,null));
+            MoodSaveList.add(3,new MoodSave(Today()-4,"Happy", false,null));
+            MoodSaveList.add(4,new MoodSave(Today()-3,"VeryHappy", true,"Belle Journée!!"));
+            MoodSaveList.add(5,new MoodSave(Today()-2,"Happy", false,null));
+            MoodSaveList.add(6,new MoodSave(Today()-1,"Happy", false,null));
+            MoodSaveList.add(7,new MoodSave(Today(),null, false,null));
             saveData();
+        }
+        if(Today() != mLastDay){
+
+
+            MoodSaveList.set(0,MoodSaveList.get(1));
+            MoodSaveList.set(1,MoodSaveList.get(2));
+            MoodSaveList.set(2,MoodSaveList.get(3));
+            MoodSaveList.set(3,MoodSaveList.get(4));
+            MoodSaveList.set(4,MoodSaveList.get(5));
+            MoodSaveList.set(5,MoodSaveList.get(6));
+            MoodSaveList.set(6,MoodSaveList.get(7));
+
         }
     }
 

@@ -23,6 +23,7 @@ import java.util.List;
 
 import static com.aceman.moodtracker.controller.NoteActivity.mAddNote;
 import static com.aceman.moodtracker.controller.NoteActivity.mIsNote;
+import static com.aceman.moodtracker.model.MoodSave.Today;
 import static java.lang.System.out;
 
 public class NormalActivity extends AppCompatActivity {
@@ -40,20 +41,18 @@ public class NormalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal);
         System.out.println("NormalActivity:onCreate()");
+        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
         this.mActivity = this;
         loadData();
-
         mMainFrame = findViewById(R.id.activity_normal_frame);
         mSmiley = findViewById(R.id.activity_normal_smiley_btn);
         mNote = findViewById(R.id.activity_normal_note_btn);
         mHistory = findViewById(R.id.activity_normal_history_btn);
-        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
-
         mSmiley.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                MoodSaveList.add(new MoodSave("Jour 14","Normal",mIsNote, mAddNote));
+                MoodSaveList.add(7, new MoodSave(Today(),"Normal", mIsNote,mAddNote));
                 saveData();
                 mSmiley.startAnimation(shake);
                 Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
@@ -121,10 +120,6 @@ public class NormalActivity extends AppCompatActivity {
         String json = mMoodSavePref.getString("TestList", null);
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
         MoodSaveList = gson.fromJson(json, type);
-
-        if(MoodSaveList == null){
-            MoodSaveList = new ArrayList<MoodSave>();
-        }
     }
 
     @Override
