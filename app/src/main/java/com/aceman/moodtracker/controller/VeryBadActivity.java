@@ -21,6 +21,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aceman.moodtracker.controller.NoteActivity.mAddNote;
+import static com.aceman.moodtracker.controller.NoteActivity.mIsNote;
 import static java.lang.System.out;
 
 public class VeryBadActivity extends AppCompatActivity {
@@ -51,7 +53,7 @@ public class VeryBadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                MoodSaveList.add(new MoodSave("Jour 20","VeryBad", 1));
+                MoodSaveList.add(new MoodSave("Jour 20","VeryBad", mIsNote, mAddNote));
                 saveData();
                 mSmiley.startAnimation(shake);
                 Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();

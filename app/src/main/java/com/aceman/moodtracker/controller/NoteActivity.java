@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
+import com.aceman.moodtracker.model.MoodSave;
 
 /**
  * Created by Lionel JOFFRAY - on 17/01/2019.
@@ -17,9 +18,11 @@ import com.aceman.moodtracker.R;
 
 public class NoteActivity extends Dialog {
 
+    public static String mAddNote;
     EditText mWriteText;
     Button mValidate, mCancel;
     private String mToastText;
+    public static boolean mIsNote;
 
 
     public NoteActivity(final Activity mActivity)
@@ -50,7 +53,9 @@ public class NoteActivity extends Dialog {
         mValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dayNote = mWriteText.getText().toString();
+                String mAddNote = mWriteText.getText().toString();
+                DayNote(mAddNote);
+                mIsNote = true;
                 setMText("Humeur sauvegardée!");
                 customToast();
                 hide();
@@ -61,6 +66,7 @@ public class NoteActivity extends Dialog {
             @Override
             public void onClick(View v) {
                 cancel();
+                mIsNote = false;
                 setMText("Retour");
                 customToast();
             }
@@ -79,6 +85,13 @@ public class NoteActivity extends Dialog {
 
     public void setMText( String mToastText){
         this.mToastText = mToastText;
+    }
+
+    public void DayNote(String addNote){
+
+
+        mAddNote = addNote;
+
     }
 
 }

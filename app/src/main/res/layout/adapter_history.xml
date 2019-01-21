@@ -11,21 +11,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Il y a une semaine"
-            android:layout_gravity="start"/>
+            android:layout_gravity="start"
+            android:layout_weight="1"/>
         <TextView
     android:id="@+id/history_mood_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Il y a une semaine"
+    android:text="H     U       M       E       U       R"
     android:layout_gravity="start"/>
 
         <ImageButton
             android:id="@+id/history_comment_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
+            android:layout_gravity="right|center_vertical"
             android:src="@drawable/ic_comment_black_48px"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:layout_weight="1"/>
+
+
+
+
 
 
 

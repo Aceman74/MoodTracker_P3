@@ -2,8 +2,8 @@ package com.aceman.moodtracker.controller;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,8 +19,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import static com.aceman.moodtracker.controller.NoteActivity.mAddNote;
+import static com.aceman.moodtracker.controller.NoteActivity.mIsNote;
+import static com.aceman.moodtracker.model.MoodSave.CheckDay;
 import static java.lang.System.out;
 
 public class MainHappyActivity extends AppCompatActivity {
@@ -53,9 +57,9 @@ public class MainHappyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                MoodSaveList.add(new MoodSave("Jour 48","Happy", 1));
+                MoodSaveList.add(CheckDay(), new MoodSave(MoodSave.getActualDay(),"Happy", mIsNote,mAddNote));
 
-
+             //   Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
                 saveData();
                 mSmiley.startAnimation(shake);
                 Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
@@ -100,6 +104,15 @@ public class MainHappyActivity extends AppCompatActivity {
 
         if(MoodSaveList == null){
             MoodSaveList = new ArrayList<MoodSave>();
+            MoodSaveList.add(0,new MoodSave("Lundi","Happy", false,null));
+            MoodSaveList.add(1,new MoodSave("Mardi","Happy", false,null));
+            MoodSaveList.add(2,new MoodSave("Mercredi","Happy", false,null));
+            MoodSaveList.add(3,new MoodSave("Jeudi","Happy", false,null));
+            MoodSaveList.add(4,new MoodSave("Vendredi","Happy", false,null));
+            MoodSaveList.add(5,new MoodSave("Samedi","Happy", false,null));
+            MoodSaveList.add(6,new MoodSave("Dimanche","Happy", false,null));
+            MoodSaveList.add(7,new MoodSave(null,null, false,null));
+            saveData();
         }
     }
 

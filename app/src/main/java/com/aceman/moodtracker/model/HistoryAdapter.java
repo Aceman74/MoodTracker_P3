@@ -1,7 +1,6 @@
 package com.aceman.moodtracker.model;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
 
 import java.util.List;
+
 
 /**
  * Created by Lionel JOFFRAY - on 18/01/2019.
@@ -54,7 +55,8 @@ public class HistoryAdapter extends BaseAdapter {
         MoodSave actualItem = (MoodSave) getItem(i);
         String Day = actualItem.getDay();
         String Mood = actualItem.getMood();
-        int Note = actualItem.getNote();
+        Boolean Note = actualItem.getNote();
+        String NoteWrite = actualItem.getAddNote();
 
         TextView DayView = view.findViewById(R.id.history_day_text);
         TextView MoodView = view.findViewById(R.id.history_mood_text);
@@ -63,47 +65,52 @@ public class HistoryAdapter extends BaseAdapter {
         DayView.setText(Day);
         MoodView.setText(Mood);
         DayView.setHeight(200);
-        if(Note !=1){
-            NoteBtn.setVisibility(View.INVISIBLE);
-            NoteBtn.setClickable(false);
-        }
-        if(Mood!=null){
-
-        switch (Mood){
-            case "Happy":
-                HistoryBack.setBackgroundResource(R.color.light_sage);
-                break;
-            case "VeryHappy":
-                HistoryBack.setBackgroundResource(R.color.banana_yellow);
-                break;
-            case "Normal":
-                HistoryBack.setBackgroundResource(R.color.cornflower_blue_65);
-                break;
-            case "Bad":
-                HistoryBack.setBackgroundResource(R.color.warm_grey);
-                break;
-            case "VeryBad":
-                HistoryBack.setBackgroundResource(R.color.faded_red);
-                break;
-                default:
-                    HistoryBack.setBackgroundResource(R.color.banana_yellow);
-        }
-
-        }
-        /*
-        if(Mood == "Happy"){
-            HistoryBack.setBackgroundResource(R.color.light_sage);
-        }if(Mood == "VeryHappy"){
-            HistoryBack.setBackgroundResource(R.color.banana_yellow);
-        }if(Mood == "Normal"){
-            HistoryBack.setBackgroundResource(R.color.cornflower_blue_65);
-        }if(Mood == "Bad"){
-            HistoryBack.setBackgroundResource(R.color.warm_grey);
-        }if(Mood == "VeryBad"){
-            HistoryBack.setBackgroundResource(R.color.faded_red);
-        }
-        */
+        NoteShow(Note,NoteWrite,NoteBtn);
+        MoodColorBack(Mood,HistoryBack);
 
         return view;
+    }
+
+    private void MoodColorBack(String Mood, LinearLayout HistoryBack) {
+
+        if(Mood!=null){
+
+            switch (Mood){
+                case "Happy":
+                     HistoryBack.setBackgroundResource(R.color.light_sage);
+                    break;
+                case "VeryHappy":
+                    HistoryBack.setBackgroundResource(R.color.banana_yellow);
+                    break;
+                case "Normal":
+                    HistoryBack.setBackgroundResource(R.color.cornflower_blue_65);
+                    break;
+                case "Bad":
+                    HistoryBack.setBackgroundResource(R.color.warm_grey);
+                    break;
+                case "VeryBad":
+                    HistoryBack.setBackgroundResource(R.color.faded_red);
+                    break;
+                default:
+                    HistoryBack.setBackgroundResource(R.color.banana_yellow);
+            }
+        }
+    }
+
+    private void NoteShow(boolean Note, final String NoteWrite, ImageButton NoteBtn){
+
+
+        if(Note == false){
+            NoteBtn.setVisibility(View.INVISIBLE);
+            NoteBtn.setClickable(false);
+        }else{ NoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,NoteWrite,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        }
+
     }
 }
