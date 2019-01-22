@@ -1,7 +1,6 @@
 package com.aceman.moodtracker.model;
 
 import java.util.Calendar;
-import java.util.Date;
 
 
 /**
@@ -14,6 +13,7 @@ public class MoodSave {
     private boolean mNote;
     private String mAddNote;
 
+    // Setting all informations for the list
     public MoodSave(int Day , String Mood, boolean Note, String AddNote){
 
         this.mDay = Day;
@@ -22,33 +22,34 @@ public class MoodSave {
         this.mAddNote = AddNote;
     }
 
-    public int getDay(){
+    int getDay(){
 
         return mDay;
     }
 
-    public String getMood(){
+    String getMood(){
 
         return mMood;
     }
 
-    public boolean getNote(){
+    boolean getNote(){
 
         return mNote;
     }
 
-    public String getAddNote(){
+    String getAddNote(){
 
         return mAddNote;
     }
 
 
+    //Get the day
     public static int Today(){
 
         Calendar calendar = Calendar.getInstance();
-        int DayIs = calendar.get(Calendar.DAY_OF_YEAR);
-        return DayIs;
+        return calendar.get(Calendar.DAY_OF_YEAR);
     }
+    /*
     public static int Yesterday(){
 
         Calendar calendar = Calendar.getInstance();
@@ -56,5 +57,5 @@ public class MoodSave {
         Yesterday--;
         return Yesterday;
     }
-
+    */
 }

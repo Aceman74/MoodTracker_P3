@@ -13,14 +13,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.lang.System.out;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private SharedPreferences mMoodSavePref;
     private List<MoodSave> MoodSaveList;
 
     @Override
@@ -28,23 +26,14 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         loadData();
-        SharedPreferences mMoodSavePref = getSharedPreferences("mMoodSave", MODE_PRIVATE);
-        setContentView(R.layout.note_test);
+        getSharedPreferences("mMoodSave", MODE_PRIVATE);
+        setContentView(R.layout.adapter_history);
         System.out.println("HistoryActivity:onCreate()");
       //  Collections.reverse(MoodSaveList);
         ListView MoodDayListView = findViewById(R.id.list_view);
         MoodDayListView.setAdapter(new HistoryAdapter(this, MoodSaveList));
 
 
-    }
-
-    private void saveData(){
-        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
-        SharedPreferences.Editor editor = mMoodSavePref.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(MoodSaveList);
-        editor.putString("TestList",json);
-        editor.apply();
     }
 
     private void loadData(){
@@ -55,7 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
         MoodSaveList = gson.fromJson(json, type);
 
         if(MoodSaveList == null){
-            MoodSaveList = new ArrayList<MoodSave>();
+            MoodSaveList = new ArrayList<>();
         }
     }
 

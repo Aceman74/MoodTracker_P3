@@ -2,10 +2,10 @@ package com.aceman.moodtracker.controller;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -14,25 +14,24 @@ import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
 import com.aceman.moodtracker.model.MoodSave;
+import com.aceman.moodtracker.model.NoteMaker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static com.aceman.moodtracker.controller.NoteActivity.mAddNote;
-import static com.aceman.moodtracker.controller.NoteActivity.mIsNote;
+import static com.aceman.moodtracker.model.NoteMaker.mAddNote;
+import static com.aceman.moodtracker.model.NoteMaker.mIsNote;
 import static com.aceman.moodtracker.model.MoodSave.Today;
 import static java.lang.System.out;
 
 public class VeryHappyActivity extends AppCompatActivity {
 
     private float x1, x2, y1, y2;
-    private FrameLayout mMainFrame;
     private ImageButton mSmiley;
     private ImageButton mNote;
     private ImageButton mHistory;
-    private VeryHappyActivity mActivity;
     private List<MoodSave> MoodSaveList;
 
     @Override
@@ -40,46 +39,37 @@ public class VeryHappyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_very_happy);
         System.out.println("VeryHappyActivity:onCreate()");
-        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);
-        this.mActivity = this;
+        final MediaPlayer clickSmiley = MediaPlayer.create(this,R.raw.very_happy);  // sound on smiley click
+        final Animation shake = AnimationUtils.loadAnimation(this,R.anim.shake_anim);   // anim on smiley click
         loadData();
-        mMainFrame = findViewById(R.id.activity_very_happy_frame);
+
+        findViewById(R.id.activity_very_happy_frame);
         mSmiley = findViewById(R.id.activity_very_happy_smiley_btn);
         mNote = findViewById(R.id.activity_very_happy_note_btn);
         mHistory = findViewById(R.id.activity_very_happy_history_btn);
-        mSmiley.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                MoodSaveList.add(7, new MoodSave(Today(),"VeryHappy", mIsNote,mAddNote));
-                saveData();
-                mSmiley.startAnimation(shake);
-                Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
-            }
+        mSmiley.setOnClickListener(v -> {
+            MoodSaveList.add(7, new MoodSave(Today(),"very_happy", mIsNote,mAddNote));
+            saveData();
+            clickSmiley.start();    // sound on smiley click
+            mSmiley.startAnimation(shake);  // anim on smiley click
+            Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
         });
 
-        mNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                NoteActivity newNote = new NoteActivity(VeryHappyActivity.this);
-                newNote.buidNotePopup();
-            }
+        mNote.setOnClickListener(v -> {
+            NoteMaker newNote = new NoteMaker(VeryHappyActivity.this);
+            newNote.buidNotePopup();    // add a daily comment
         });
 
-        mHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent HistoryActivity = new Intent(getApplicationContext(), HistoryActivity.class);
-                startActivity(HistoryActivity);
-                overridePendingTransition(R.anim.slide_in_bot_right, R.anim.slide_out_bot_right);
-            }
+        mHistory.setOnClickListener(v -> {
+            Intent HistoryActivity = new Intent(getApplicationContext(), HistoryActivity.class);
+            startActivity(HistoryActivity); // show history
+            overridePendingTransition(R.anim.slide_in_bot_right, R.anim.slide_out_bot_right);
         });
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent swipeEvent) {
+    public boolean onTouchEvent(MotionEvent swipeEvent) {    // swipe animations
         switch (swipeEvent.getAction()){
             case MotionEvent.ACTION_DOWN:
                 x1 = swipeEvent.getX();
@@ -88,6 +78,7 @@ public class VeryHappyActivity extends AppCompatActivity {
             case MotionEvent.ACTION_UP:
                 x2 = swipeEvent.getX();
                 y2 = swipeEvent.getY();
+
                 // if swipe down
                 if(y2>y1){
                     Intent VeryHappyActivity = new Intent(getApplicationContext(), MainHappyActivity.class);
@@ -118,35 +109,30 @@ public class VeryHappyActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         out.println("VeryHappyActivity::onStart()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         out.println("VeryHappyActivity::onResume()");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         out.println("VeryHappyActivity::onPause()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
         out.println("VeryHappyActivity::onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         out.println("VeryHappyActivity::onDestroy()");
     }
 }

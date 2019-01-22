@@ -16,15 +16,14 @@ import java.util.List;
 
 import static com.aceman.moodtracker.model.MoodSave.Today;
 
-
 /**
  * Created by Lionel JOFFRAY - on 18/01/2019.
  */
+
 public class HistoryAdapter extends BaseAdapter {
 
     private Context context;
-    LayoutInflater inflater;
-
+    private LayoutInflater inflater;
     private List<MoodSave> HistoryViewerList;
 
     public HistoryAdapter(Context context, List<MoodSave> HistoryViewerList){
@@ -33,7 +32,7 @@ public class HistoryAdapter extends BaseAdapter {
         this.inflater = LayoutInflater.from(context);
     }
 
-
+    // Gets only 7 items
     @Override
     public int getCount() {
         return 7;
@@ -57,7 +56,7 @@ public class HistoryAdapter extends BaseAdapter {
         MoodSave actualItem = (MoodSave) getItem(i);
         int Day = actualItem.getDay();
         String Mood = actualItem.getMood();
-        Boolean Note = actualItem.getNote();
+        boolean Note = actualItem.getNote();
         String NoteWrite = actualItem.getAddNote();
 
         TextView DayView = view.findViewById(R.id.history_day_text);
@@ -65,33 +64,35 @@ public class HistoryAdapter extends BaseAdapter {
         LinearLayout HistoryBack = view.findViewById(R.id.mood_color);
         ImageButton NoteBtn = view.findViewById(R.id.history_comment_btn);
         SetDayOfWeek(Day,DayView);
-        // DayView.setText(Day);
-        MoodView.setText(Mood);
-        DayView.setHeight(200);
+        // DayView.setText(Day);     //Used for testing
+        // MoodView.setText(Mood);   //Used for testing
+        DayView.setHeight(90);
+        NoteBtn.setPadding(0,0,50,130);
         NoteShow(Note,NoteWrite,NoteBtn);
         MoodColorBack(Mood,HistoryBack);
 
         return view;
     }
 
+    // Setting the background color of each mood
     private void MoodColorBack(String Mood, LinearLayout HistoryBack) {
 
         if(Mood!=null){
 
             switch (Mood){
-                case "Happy":
+                case "happy":
                      HistoryBack.setBackgroundResource(R.color.light_sage);
                     break;
-                case "VeryHappy":
+                case "very_happy":
                     HistoryBack.setBackgroundResource(R.color.banana_yellow);
                     break;
-                case "Normal":
+                case "normal":
                     HistoryBack.setBackgroundResource(R.color.cornflower_blue_65);
                     break;
-                case "Bad":
+                case "bad":
                     HistoryBack.setBackgroundResource(R.color.warm_grey);
                     break;
-                case "VeryBad":
+                case "very_bad":
                     HistoryBack.setBackgroundResource(R.color.faded_red);
                     break;
                 default:
@@ -100,6 +101,7 @@ public class HistoryAdapter extends BaseAdapter {
         }
     }
 
+    // Show day note if there is one
     private void NoteShow(boolean Note, final String NoteWrite, ImageButton NoteBtn){
 
 
@@ -117,6 +119,7 @@ public class HistoryAdapter extends BaseAdapter {
 
     }
 
+    // Setting the day for each
     private void SetDayOfWeek(int Day,TextView DayView ){
 
         if(Day == Today()-1){
