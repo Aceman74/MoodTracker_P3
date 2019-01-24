@@ -25,7 +25,14 @@ import static com.aceman.moodtracker.model.NoteMaker.mAddNote;
 import static com.aceman.moodtracker.model.NoteMaker.mIsNote;
 import static com.aceman.moodtracker.model.MoodSave.Today;
 import static java.lang.System.out;
-
+/**
+ * <b>VeryBad class</b> with view VeryBad Mood and three buttons:<br>
+ * - Smiley (center) who save the actual mood<br>
+ * - Note (bot left) who add a note with the mood<br>
+ * - History for seeing history on 7 days<br>
+ *
+ * @author Aceman
+ */
 public class VeryBadActivity extends AppCompatActivity {
 
     private float x1, x2, y1, y2;
@@ -34,6 +41,10 @@ public class VeryBadActivity extends AppCompatActivity {
     private ImageButton mHistory;
     private List<MoodSave> MoodSaveList;
 
+    /**
+     * Setting the actual mood view, with smiley and buttons.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +78,12 @@ public class VeryBadActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_bot_right, R.anim.slide_out_bot_right);
         });
     }
-
+    /**
+     * Swipe event for up and down.
+     * @param swipeEvent get the movement
+     * @return better mood if swipe up
+     * @see BadActivity swipe up
+     */
     @Override
     public boolean onTouchEvent(MotionEvent swipeEvent) {   // swipe animations
         switch (swipeEvent.getAction()){
@@ -88,7 +104,11 @@ public class VeryBadActivity extends AppCompatActivity {
                 break;
         }return false;
     }
-
+    /**
+     * Save the mood to a List using Gson.
+     * @see Gson
+     * @see MoodSave
+     */
     private void saveData(){
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         SharedPreferences.Editor editor = mMoodSavePref.edit();
@@ -97,7 +117,9 @@ public class VeryBadActivity extends AppCompatActivity {
         editor.putString("TestList",json);
         editor.apply();
     }
-
+    /**
+     * Load the mood List.
+     */
     private void loadData(){
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         Gson gson = new Gson();

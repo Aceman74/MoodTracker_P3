@@ -17,9 +17,11 @@ import com.aceman.moodtracker.R;
 import com.aceman.moodtracker.model.MoodSave;
 
 /**
+ * NoteMaker is the class who save the note of the day.
+ *
+ * @author Aceman
  * Created by Lionel JOFFRAY - on 17/01/2019.
  */
-
 public class NoteMaker extends Dialog {
 
     public static String mAddNote;
@@ -28,7 +30,11 @@ public class NoteMaker extends Dialog {
     private String mToastText;
     public static boolean mIsNote;
 
-    // Comment for the day
+    /**
+     * Add a note if clicked on the Note button on all mood activity.<br>
+     * Open a custom Dialog layout.
+     * @param mActivity the current activity
+     */
     public NoteMaker(final Activity mActivity)
     {
         super(mActivity, R.style.CustomDialog);
@@ -55,6 +61,9 @@ public class NoteMaker extends Dialog {
         });
     }
 
+    /**
+     * Create the popup in activity on click on addnote button.
+     */
     public void buidNotePopup(){
 
         show();
@@ -69,7 +78,10 @@ public class NoteMaker extends Dialog {
         this.mToastText = mToastText;
     }
 
-    // Store the daily note in a String
+    /**
+     * Save the Note in a String.
+     * @param addNote actual note
+     */
     private void DayNote(String addNote){
 
 

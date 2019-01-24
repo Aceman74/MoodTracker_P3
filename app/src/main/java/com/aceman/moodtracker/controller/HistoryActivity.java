@@ -16,11 +16,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.System.out;
+/**
+ * <b>History activity</b> use to set the history with adapter.
+ * @see MoodSave
+ * @see HistoryAdapter
+ *
+ * @author Aceman
+ * Created by Lionel JOFFRAY - on 18/01/2019.
+ */
 
 public class HistoryActivity extends AppCompatActivity {
 
     private List<MoodSave> MoodSaveList;
 
+    /**
+     * Setting the adapter with the List
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +47,9 @@ public class HistoryActivity extends AppCompatActivity {
 
 
     }
-
+    /**
+     * Load the mood List.
+     */
     private void loadData(){
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         Gson gson = new Gson();
@@ -48,6 +62,9 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Added a sliding animation when back button is pressed.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

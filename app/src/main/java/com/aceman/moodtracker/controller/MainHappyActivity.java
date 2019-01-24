@@ -26,7 +26,14 @@ import static com.aceman.moodtracker.model.NoteMaker.mAddNote;
 import static com.aceman.moodtracker.model.NoteMaker.mIsNote;
 import static com.aceman.moodtracker.model.MoodSave.Today;
 import static java.lang.System.out;
-
+/**
+ * <b>Main class</b> with default view Happy Mood and three buttons:<br>
+ * - Smiley (center) who save the actual mood<br>
+ * - Note (bot left) who add a note with the mood<br>
+ * - History for seeing history on 7 days<br>
+ *
+ * @author Aceman
+ */
 public class MainHappyActivity extends AppCompatActivity {
 
     private float x1, x2, y1, y2;
@@ -36,6 +43,10 @@ public class MainHappyActivity extends AppCompatActivity {
     private List<MoodSave> MoodSaveList;
     public int mLastDay;
 
+    /**
+     * Setting the actual mood view, with smiley and buttons.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +63,7 @@ public class MainHappyActivity extends AppCompatActivity {
 
         mSmiley.setOnClickListener(v -> {
             MoodSaveList.remove(7);
-            MoodSaveList.add(7, new MoodSave(Today(),"happy", mIsNote,mAddNote));
+            MoodSaveList.add(7, new MoodSave(Today(),"happy", mIsNote,mAddNote)); // Temporary save slot
             saveData();
             clickSmiley.start();    // sound on smiley click
             mSmiley.startAnimation(shake);  // anim on smiley click
@@ -71,6 +82,13 @@ public class MainHappyActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Swipe event for up and down.
+     * @param swipeEvent get the movement
+     * @return better mood if swipe up, worst if swipe down
+     * @see VeryHappyActivity swipe up
+     * @see NormalActivity swipe down
+     */
     @Override
     public boolean onTouchEvent(MotionEvent swipeEvent) {   // swipe animations
 
@@ -99,12 +117,21 @@ public class MainHappyActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Check the first launch of the day.
+     * @see MoodSave#Today()
+     */
     private void CheckLaunchToday() {    // compare date
         if(Today() != mLastDay){
             mLastDay=Today();
         }
     }
 
+    /**
+     * Save the mood to a List using Gson.
+     * @see Gson
+     * @see MoodSave
+     */
     private void saveData(){    // save SharedPreferences and day number
         SharedPreferences mFirstLaunchToday = getSharedPreferences("LaunchToday",MODE_PRIVATE);
         SharedPreferences.Editor firstLaunch = mFirstLaunchToday.edit();
@@ -118,6 +145,10 @@ public class MainHappyActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     * Load the mood List or create one if first launch ever.
+     * Also move the items in MoodSaveList everyday for showing 7 past days in history.
+     */
     private void loadData(){
         SharedPreferences mFirstLaunchToday = getSharedPreferences("LaunchToday",MODE_PRIVATE);
         mLastDay = mFirstLaunchToday.getInt("IsFirstLaunchToday",mLastDay);
@@ -127,30 +158,54 @@ public class MainHappyActivity extends AppCompatActivity {
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
         MoodSaveList = gson.fromJson(json, type);
 
-        // create a first list if first launch or deleted list
-        if(MoodSaveList == null){
-            MoodSaveList = new ArrayList<>();
-            MoodSaveList.add(0,new MoodSave(Today()-7,"very_bad", false,null));
-            MoodSaveList.add(1,new MoodSave(Today()-6,"bad", true,"Mauvaise journée!"));
-            MoodSaveList.add(2,new MoodSave(Today()-5,"normal", false,null));
-            MoodSaveList.add(3,new MoodSave(Today()-4,"happy", false,null));
-            MoodSaveList.add(4,new MoodSave(Today()-3,"very_happy", true,"Belle Journée!!"));
-            MoodSaveList.add(5,new MoodSave(Today()-2,"happy", false,null));
-            MoodSaveList.add(6,new MoodSave(Today()-1,"very_happy", false,null));
-            MoodSaveList.add(7,new MoodSave(Today(),"happy", false,null));
-            saveData();
-        }
-        if(Today() != mLastDay && mLastDay != 0){       // move items on past 7 day if it is a new day
-            MoodSaveList.set(0,MoodSaveList.get(1));
-            MoodSaveList.set(1,MoodSaveList.get(2));
-            MoodSaveList.set(2,MoodSaveList.get(3));
-            MoodSaveList.set(3,MoodSaveList.get(4));
-            MoodSaveList.set(4,MoodSaveList.get(5));
-            MoodSaveList.set(5,MoodSaveList.get(6));
-            MoodSaveList.set(6,MoodSaveList.get(7));
-        }
-        CheckLaunchToday(); // check if first launch of the day
+        ListCreate();   // create a first list if first launch or deleted list
+        SaveMover();    // move items on past 7 day if it is a new day
+        CheckLaunchToday();  // check if first launch of the day
         saveData();
+    }
+
+    /**
+     * Create a first list if first launch or deleted list.
+     */
+    protected void ListCreate(){
+        if(MoodSaveList == null){
+        MoodSaveList = new ArrayList<>();
+        MoodSaveList.add(0,new MoodSave(Today()-7,"very_bad", false,null));
+        MoodSaveList.add(1,new MoodSave(Today()-6,"bad", true,"Mauvaise journée!"));
+        MoodSaveList.add(2,new MoodSave(Today()-5,"normal", false,null));
+        MoodSaveList.add(3,new MoodSave(Today()-4,"happy", false,null));
+        MoodSaveList.add(4,new MoodSave(Today()-3,"very_happy", true,"Belle Journée!!"));
+        MoodSaveList.add(5,new MoodSave(Today()-2,"happy", false,null));
+        MoodSaveList.add(6,new MoodSave(Today()-1,"very_bad", false,null));
+        MoodSaveList.add(7,new MoodSave(Today(),"happy", false,null));
+        saveData();
+        }
+    }
+
+    /**
+     * Move items on past 7 day if it is a new day.<br>
+     *     + fix (do while) if app is not launched everyday!
+     * <mark>(note: may cause problem if launch from 1st January to 7th)</mark>
+     */
+    protected void SaveMover(){
+
+        int dayleft = Today() - mLastDay;
+        if(Today() != mLastDay && mLastDay != 0)
+
+        do{
+        MoodSaveList.set(0,MoodSaveList.get(1));
+        MoodSaveList.set(1,MoodSaveList.get(2));
+        MoodSaveList.set(2,MoodSaveList.get(3));
+        MoodSaveList.set(3,MoodSaveList.get(4));
+        MoodSaveList.set(4,MoodSaveList.get(5));
+        MoodSaveList.set(5,MoodSaveList.get(6));
+        MoodSaveList.set(6,MoodSaveList.get(7));
+            MoodSaveList.remove(7);
+            MoodSaveList.add(7,new MoodSave(Today()-dayleft,"normal", false,null));
+        mLastDay++;
+        dayleft--;
+    }
+    while(mLastDay <= Today());
     }
 
     @Override
