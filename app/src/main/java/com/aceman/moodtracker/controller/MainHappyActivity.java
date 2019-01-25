@@ -205,7 +205,7 @@ public class MainHappyActivity extends AppCompatActivity {
         mLastDay++;
         dayleft--;
     }
-    while(mLastDay <= Today());
+    while(mLastDay < Today());
     }
 
     @Override
