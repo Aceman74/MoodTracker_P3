@@ -66,11 +66,4 @@ public class MoodSave {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_YEAR);
     }
-    public static int Yesterday(){
-
-        Calendar calendar = Calendar.getInstance();
-        int Yesterday = calendar.get(Calendar.DAY_OF_YEAR);
-        Yesterday--;
-        return Yesterday;
-    }
 }

@@ -1,282 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_history_frame"
+
+
+<LinearLayout
+    android:id="@+id/mood_color"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".controller.HistoryActivity"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_weight="1"
-    android:background="@android:color/darker_gray"
-    android:rowCount="7"
-    android:layout_column="2"
-    >
-
-    <LinearLayout
-        android:id="@+id/activity_history_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_column="1">
-
-        <RelativeLayout
-            android:id="@+id/activity_history_one_week_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
+    android:layout_weight="5"
+    android:layout_gravity="start"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
-        android:background="@color/faded_red"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:text="@string/one_week"
-        android:textColor="@color/black_overlay"
+        android:id="@+id/history_day_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Oups!"
+        android:layout_gravity="start"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical|start"
-        />
-
-            <TextView
-                android:id="@+id/grey_one_week"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/note_btn_one_week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment_black_48px"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/show_note_of_the_day"
-                android:layout_marginEnd="10sp"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/activity_history_six_day_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"/>
     <TextView
-        android:background="@color/cornflower_blue_65"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:text="@string/six_day"
-        android:textColor="@color/black_overlay"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical|start"/>
+        android:id="@+id/history_mood_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/grey_six_day"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/note_btn_six_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment_black_48px"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/show_note_of_the_day"
-                android:layout_marginEnd="10sp"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/activity_history_five_day_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-    <TextView
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:text="@string/five_day"
-        android:textColor="@color/black_overlay"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical|start"/>
-
-            <TextView
-                android:id="@+id/grey_five_day"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/note_btn_five_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment_black_48px"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/show_note_of_the_day"
-                android:layout_marginEnd="10sp"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/activity_history_four_day_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-    <TextView
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:text="@string/four_day"
-        android:textColor="@color/black_overlay"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical|start"/>
-
-            <TextView
-                android:id="@+id/grey_four_day"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/note_btn_four_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment_black_48px"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/show_note_of_the_day"
-                android:layout_marginEnd="10sp"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/activity_history_three_day_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-    <TextView
-        android:background="@color/warm_grey"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:text="@string/three_day"
-        android:textColor="@color/black_overlay"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical|start"/>
-
-            <TextView
-                android:id="@+id/grey_three_day"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/note_btn_three_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment_black_48px"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/show_note_of_the_day"
-                android:layout_marginEnd="10sp"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/activity_history_two_day_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-    <TextView
-        android:background="@color/light_sage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:text="@string/two_day"
-        android:textColor="@color/black_overlay"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical|start"/>
-
-            <TextView
-                android:id="@+id/grey_two_day"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/note_btn_two_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment_black_48px"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/show_note_of_the_day"
-                android:layout_marginEnd="10sp"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/activity_history_yesterday_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-    <TextView
-        android:background="@color/banana_yellow"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:text="@string/yesterday"
-        android:textColor="@color/black_overlay"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:gravity="center_vertical|start"/>
-
-            <TextView
-                android:id="@+id/grey_yesterday"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/note_btn_yesterday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_comment_black_48px"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/show_note_of_the_day"
-                android:layout_marginEnd="10sp"/>
-        </RelativeLayout>
-    </LinearLayout>
-</GridLayout>
+    <ImageButton
+        android:id="@+id/history_comment_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:src="@drawable/ic_comment_black_48px"
+        android:background="@android:color/transparent"
+        android:layout_weight="1"/>
+</LinearLayout>

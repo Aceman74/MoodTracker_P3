@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.aceman.moodtracker.model.HistoryAdapter;
+import com.aceman.moodtracker.model.historyAdapter;
 import com.aceman.moodtracker.R;
 import com.aceman.moodtracker.model.MoodSave;
 import com.google.gson.Gson;
@@ -19,7 +19,7 @@ import static java.lang.System.out;
 /**
  * <b>History activity</b> use to set the history with adapter.
  * @see MoodSave
- * @see HistoryAdapter
+ * @see historyAdapter
  *
  * @author Aceman
  * Created by Lionel JOFFRAY - on 18/01/2019.
@@ -31,7 +31,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     /**
      * Setting the adapter with the List
-     * @param savedInstanceState
+     * @param savedInstanceState save instance
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +41,9 @@ public class HistoryActivity extends AppCompatActivity {
         getSharedPreferences("mMoodSave", MODE_PRIVATE);
         setContentView(R.layout.adapter_history);
         System.out.println("HistoryActivity:onCreate()");
-      //  Collections.reverse(MoodSaveList);
+        //  Collections.reverse(MoodSaveList);
         ListView MoodDayListView = findViewById(R.id.list_view);
-        MoodDayListView.setAdapter(new HistoryAdapter(this, MoodSaveList));
+        MoodDayListView.setAdapter(new historyAdapter(this, MoodSaveList.subList(0,7)));
 
 
     }

@@ -61,6 +61,10 @@ public class NoteMaker extends Dialog {
         });
     }
 
+    public void sendEmail(){
+
+    }
+
     /**
      * Create the popup in activity on click on addnote button.
      */

@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main_frame"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_sage"
-    tools:context=".controller.MainHappyActivity">
+    tools:context=".controller.MainActivity">
 
     <ImageButton
-        android:id="@+id/activity_main_happy_smiley_btn"
+        android:id="@+id/activity_main_smiley_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:color/transparent"
         android:src="@drawable/smiley_happy"
-        android:contentDescription="@string/Actual_mood" />
+        android:contentDescription="@string/Actual_mood"
+        android:focusableInTouchMode="false" />
+    <ImageButton
+        android:id="@+id/activity_main_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:src="@android:drawable/ic_menu_share"
+        android:background="@android:color/transparent"
+        android:padding="10sp"
+        android:contentDescription="Share your mood with your friends!"
+        android:visibility="invisible"
+        android:clickable="false"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:focusableInTouchMode="false">
 
         <ImageButton
-            android:id="@+id/activity_main_happy_note_btn"
+            android:id="@+id/activity_main_note_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -33,7 +47,7 @@
             android:contentDescription="@string/Add_Note" />
 
         <ImageButton
-            android:id="@+id/activity_main_happy_history_btn"
+            android:id="@+id/activity_main_history_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
