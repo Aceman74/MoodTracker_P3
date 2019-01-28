@@ -4,11 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,33 +23,39 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.aceman.moodtracker.model.NoteMaker.mAddNote;
 import static com.aceman.moodtracker.model.NoteMaker.mIsNote;
-import static com.aceman.moodtracker.model.MoodSave.Today;
+import static com.aceman.moodtracker.model.MoodSave.getToday;
 import static java.lang.System.out;
 /**
+ ** MoodTracker<br>
+ * Version 1.0<br>
+ *
  * <b>Main class</b> is where the user choose his mood by swiping and it contains three buttons:<br>
  * - Smiley (center) who save the actual mood<br>
  * - Note (bot left) who add a note with the mood<br>
  * - History for seeing history on 7 days<br>
  *
+
  * @author Aceman
  */
 public class MainActivity extends AppCompatActivity {
 
     private float x1, x2, y1, y2;
-    private ImageButton mSmiley;
-    private ImageButton mNote;
-    private ImageButton mHistory;
-    private List<MoodSave> MoodSaveList;
+    @BindView(R.id.activity_main_frame) FrameLayout mFrame;
+    @BindView(R.id.activity_main_smiley_btn) ImageButton mSmiley;
+    @BindView(R.id.activity_main_note_btn) ImageButton mNote;
+    @BindView(R.id.activity_main_history_btn) ImageButton mHistory;
+    @BindView(R.id.activity_main_share) ImageButton mShare;
+    private List<MoodSave> mMoodSaveList;
     public int mLastDay;
     private String mMood = "happy";
     private String mMoodFr;
     private MediaPlayer mSound;
-    private FrameLayout mFrame;
-    private ImageButton mShare;
     private int mCurrentPos = 3;
-    private ShareActionProvider mShareActionProvider;
 
     /**
      * Setting the Main mood view, with smileys and buttons.
@@ -63,19 +65,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         System.out.println("MainActivity:onCreate()");
         final Animation shake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake_anim);    // anim on smiley click
+        setMoodSwipe();
         loadData();
 
-        mFrame = findViewById(R.id.activity_main_frame);
-        mSmiley = findViewById(R.id.activity_main_smiley_btn);
-        mNote = findViewById(R.id.activity_main_note_btn);
-        mHistory = findViewById(R.id.activity_main_history_btn);
-        mShare = findViewById(R.id.activity_main_share);
-
         mSmiley.setOnClickListener(v -> {
-            MoodSaveList.remove(7);
-            MoodSaveList.add(7, new MoodSave(Today(),mMood, mIsNote,mAddNote)); // Temporary save slot
+            mMoodSaveList.remove(7);
+            mMoodSaveList.add(7, new MoodSave(getToday(),mMood, mIsNote,mAddNote)); // Temporary save slot
             saveData();
             mShare.setClickable(true);
             mShare.setVisibility(View.VISIBLE);
@@ -96,10 +94,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(HistoryActivity); // show history
             overridePendingTransition(R.anim.slide_in_bot_right, R.anim.slide_out_bot_right);
         });
-        mShare.setOnClickListener(v -> {
 
-            shareClick();
-        });
+        mShare.setOnClickListener(v -> shareClick()); // share btn
     }
 
     /**
@@ -121,44 +117,41 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onTouchEvent(MotionEvent swipeEvent) {   // swipe animations
-
         switch (swipeEvent.getAction()){
             case MotionEvent.ACTION_DOWN:
                 // x1 = swipeEvent.getX();
                 y1 = swipeEvent.getY();
                 break;
+
             case MotionEvent.ACTION_UP:
                 // x2 = swipeEvent.getX();
                 y2 = swipeEvent.getY();
                 // if swipe up
                 if(y2<y1 && mCurrentPos < 4){
-
                     mCurrentPos++;
                 }
-
                 // if swipe down
                 if(y2>y1 && mCurrentPos > 0){
-
                     mCurrentPos--;
                 }
                 break;
         }
-
+        mSound.stop();  // stop sound created with swipe movement
+        mSound.release();
         setMoodSwipe(); // Set the mood view
         Animation fadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);    //  Smoother transition
         mSmiley.startAnimation(fadein);
         mFrame.startAnimation(fadein);
-
         return super.onTouchEvent(swipeEvent);
     }
 
     /**
      * Check the first launch of the day.
-     * @see MoodSave#Today()
+     * @see MoodSave#getToday()
      */
     private void checkLaunchToday() {    // compare date
-        if(Today() != mLastDay){
-            mLastDay=Today();
+        if(getToday() != mLastDay){
+            mLastDay = getToday();
         }
     }
 
@@ -175,24 +168,23 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         SharedPreferences.Editor editor = mMoodSavePref.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(MoodSaveList);
+        String json = gson.toJson(mMoodSaveList);
         editor.putString("TestList",json);
         editor.apply();
     }
 
     /**
      * Load the mood List or create one if first launch ever.
-     * Also move the items in MoodSaveList everyday for showing 7 past days in history.
+     * Also move the items in mMoodSaveList everyday for showing 7 past days in history.
      */
     private void loadData(){
         SharedPreferences mFirstLaunchToday = getSharedPreferences("LaunchToday",MODE_PRIVATE);
         mLastDay = mFirstLaunchToday.getInt("IsFirstLaunchToday",mLastDay);
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mMoodSavePref.getString("TestList", null);
+        String json = mMoodSavePref.getString("Mood_Json", null);
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
-        MoodSaveList = gson.fromJson(json, type);
-
+        mMoodSaveList = gson.fromJson(json, type);
         listCreate();   // create a first list if first launch or deleted list
         saveMover();    // move items on past 7 day if it is a new day
         checkLaunchToday();  // update and check the day
@@ -203,16 +195,16 @@ public class MainActivity extends AppCompatActivity {
      * Create a first list if first launch or deleted list.
      */
     protected void listCreate(){
-        if(MoodSaveList == null){
-            MoodSaveList = new ArrayList<>();
-            MoodSaveList.add(0,new MoodSave(Today()-7,"very_bad", false,null));
-            MoodSaveList.add(1,new MoodSave(Today()-6,"bad", true,"Mauvaise journée!"));
-            MoodSaveList.add(2,new MoodSave(Today()-5,"normal", false,null));
-            MoodSaveList.add(3,new MoodSave(Today()-4,"happy", false,null));
-            MoodSaveList.add(4,new MoodSave(Today()-3,"very_happy", true,"Belle Journée!!"));
-            MoodSaveList.add(5,new MoodSave(Today()-2,"happy", false,null));
-            MoodSaveList.add(6,new MoodSave(Today()-1,"very_bad", true,"Grrr quel mauvais temps..."));
-            MoodSaveList.add(7,new MoodSave(Today(),"happy", false,null));
+        if(mMoodSaveList == null){
+            mMoodSaveList = new ArrayList<>();
+            mMoodSaveList.add(0,new MoodSave(getToday()-7,"very_bad", false,null));
+            mMoodSaveList.add(1,new MoodSave(getToday()-6,"baad", true,"Mauvaise journée!"));
+            mMoodSaveList.add(2,new MoodSave(getToday()-5,"normal", false,null));
+            mMoodSaveList.add(3,new MoodSave(getToday()-4,"happy", false,null));
+            mMoodSaveList.add(4,new MoodSave(getToday()-3,"very_happy", true,"Belle Journée!!"));
+            mMoodSaveList.add(5,new MoodSave(getToday()-2,"happy", false,null));
+            mMoodSaveList.add(6,new MoodSave(getToday()-1,"very_bad", true,"Grrr quel mauvais temps..."));
+            mMoodSaveList.add(7,new MoodSave(getToday(),"happy", false,null));
             saveData();
         }
     }
@@ -223,23 +215,27 @@ public class MainActivity extends AppCompatActivity {
      * <mark>(note: may cause problem if launch from 1st January to 7th)</mark>
      */
     protected void saveMover(){
-        int dayleft = Today() - mLastDay;
+        int today = getToday();
+        int dayleft = today - mLastDay;
 
-        if(Today() != mLastDay && mLastDay != 0){
+        if(today >= 1 && today <= 7){
+            today = today+365;
+        }
+        if(today != mLastDay && mLastDay != 0){
             do{
-                MoodSaveList.set(0,MoodSaveList.get(1));
-                MoodSaveList.set(1,MoodSaveList.get(2));
-                MoodSaveList.set(2,MoodSaveList.get(3));
-                MoodSaveList.set(3,MoodSaveList.get(4));
-                MoodSaveList.set(4,MoodSaveList.get(5));
-                MoodSaveList.set(5,MoodSaveList.get(6));
-                MoodSaveList.set(6,MoodSaveList.get(7));
-                MoodSaveList.remove(7);
-                MoodSaveList.add(7,new MoodSave(Today()-dayleft,"happy", false,null));
+                mMoodSaveList.set(0, mMoodSaveList.get(1));
+                mMoodSaveList.set(1, mMoodSaveList.get(2));
+                mMoodSaveList.set(2, mMoodSaveList.get(3));
+                mMoodSaveList.set(3, mMoodSaveList.get(4));
+                mMoodSaveList.set(4, mMoodSaveList.get(5));
+                mMoodSaveList.set(5, mMoodSaveList.get(6));
+                mMoodSaveList.set(6, mMoodSaveList.get(7));
+                mMoodSaveList.remove(7);
+                mMoodSaveList.add(7,new MoodSave(today- dayleft,"happy", false,null));
                 mLastDay++;
                 dayleft--;
             }
-            while(mLastDay < Today());
+            while(mLastDay < today);
         }
     }
 
@@ -251,40 +247,45 @@ public class MainActivity extends AppCompatActivity {
 
             switch (mCurrentPos){
 
-                case 0: mMood = "very_bad";
+                case 0:
+                    mMood = "very_bad";
                     mMoodFr = "Très Mauvaise";
                     mFrame.setBackgroundResource(R.color.faded_red);
                     mSmiley.setImageResource(R.drawable.smiley_sad);
                     mSound = MediaPlayer.create(this,R.raw.very_bad);
                     break;
-                case 1: mMood = "bad";
+                case 1:
+                    mMood = "baad";
                     mMoodFr = "Mauvaise";
                     mFrame.setBackgroundResource(R.color.warm_grey);
                     mSmiley.setImageResource(R.drawable.smiley_disappointed);
                     mSound = MediaPlayer.create(this,R.raw.bad);
                     break;
-                case 2: mMood = "normal";
+                case 2:
+                    mMood = "normal";
                     mMoodFr = "Normale";
                     mFrame.setBackgroundResource(R.color.cornflower_blue_65);
                     mSmiley.setImageResource(R.drawable.smiley_normal);
                     mSound = MediaPlayer.create(this,R.raw.normal);
                     break;
-                case 3: mMood = "happy";
+                case 3:
+                    mMood = "happy";
                     mMoodFr = "Bonne";
                     mFrame.setBackgroundResource(R.color.light_sage);
                     mSmiley.setImageResource(R.drawable.smiley_happy);
                     mSound = MediaPlayer.create(this,R.raw.happy);
                     break;
-                case 4: mMood = "very_happy";
+                case 4:
+                    mMood = "very_happy";
                     mMoodFr = "Très Bonne";
                     mFrame.setBackgroundResource(R.color.banana_yellow);
                     mSmiley.setImageResource(R.drawable.smiley_super_happy);
                     mSound = MediaPlayer.create(this,R.raw.very_happy);
                     break;
+
             }
         }
     }
-
 
     @Override
     protected void onStart() {

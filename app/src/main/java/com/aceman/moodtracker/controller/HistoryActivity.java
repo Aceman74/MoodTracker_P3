@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.aceman.moodtracker.model.historyAdapter;
+import com.aceman.moodtracker.model.HistoryAdapter;
 import com.aceman.moodtracker.R;
 import com.aceman.moodtracker.model.MoodSave;
 import com.google.gson.Gson;
@@ -15,19 +15,22 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static java.lang.System.out;
 /**
  * <b>History activity</b> use to set the history with adapter.
  * @see MoodSave
- * @see historyAdapter
+ * @see HistoryAdapter
  *
  * @author Aceman
  * Created by Lionel JOFFRAY - on 18/01/2019.
  */
-
 public class HistoryActivity extends AppCompatActivity {
 
-    private List<MoodSave> MoodSaveList;
+    @BindView(R.id.list_view) ListView mMoodDayListView;
+    private List<MoodSave> mMoodSaveList;
 
     /**
      * Setting the adapter with the List
@@ -36,14 +39,12 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         loadData();
         getSharedPreferences("mMoodSave", MODE_PRIVATE);
         setContentView(R.layout.adapter_history);
+        ButterKnife.bind(this);
         System.out.println("HistoryActivity:onCreate()");
-        //  Collections.reverse(MoodSaveList);
-        ListView MoodDayListView = findViewById(R.id.list_view);
-        MoodDayListView.setAdapter(new historyAdapter(this, MoodSaveList.subList(0,7)));
+        mMoodDayListView.setAdapter(new HistoryAdapter(this, mMoodSaveList.subList(0,7)));    // To get only 7 days
 
 
     }
@@ -55,10 +56,10 @@ public class HistoryActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = mMoodSavePref.getString("TestList", null);
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
-        MoodSaveList = gson.fromJson(json, type);
+        mMoodSaveList = gson.fromJson(json, type);
 
-        if(MoodSaveList == null){
-            MoodSaveList = new ArrayList<>();
+        if(mMoodSaveList == null){
+            mMoodSaveList = new ArrayList<>();
         }
     }
 

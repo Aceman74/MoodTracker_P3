@@ -2,7 +2,6 @@ package com.aceman.moodtracker.model;
 
 import java.util.Calendar;
 
-
 /**
  * Save the user preferences in a List MoodSave:<br>
  * - Day of the year<br>
@@ -27,7 +26,6 @@ public class MoodSave {
      * @param AddNote note as String
      */
     public MoodSave(int Day , String Mood, boolean Note, String AddNote){
-
         this.mDay = Day;
         this.mMood = Mood;
         this.mNote = Note;
@@ -35,34 +33,27 @@ public class MoodSave {
     }
 
     int getDay(){
-
         return mDay;
     }
 
     String getMood(){
-
         return mMood;
     }
 
     boolean getNote(){
-
         return mNote;
     }
 
     String getAddNote(){
-
         return mAddNote;
     }
-
 
     /**
      * Get the DAY_OF_YEAR
      * @return the day of the year
      * @see Calendar
-     * <mark>(note: may cause problem if launch 1st January)</mark>
      */
-    public static int Today(){
-
+    public static int getToday(){
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_YEAR);
     }
