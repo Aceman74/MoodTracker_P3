@@ -40,7 +40,7 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadData();
-        getSharedPreferences("mMoodSave", MODE_PRIVATE);
+        getSharedPreferences("MoodSave", MODE_PRIVATE);
         setContentView(R.layout.adapter_history);
         ButterKnife.bind(this);
         System.out.println("HistoryActivity:onCreate()");
@@ -54,7 +54,7 @@ public class HistoryActivity extends AppCompatActivity {
     private void loadData(){
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mMoodSavePref.getString("TestList", null);
+        String json = mMoodSavePref.getString("Mood_List", null);
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
         mMoodSaveList = gson.fromJson(json, type);
 

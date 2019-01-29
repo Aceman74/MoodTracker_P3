@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = mMoodSavePref.edit();
         Gson gson = new Gson();
         String json = gson.toJson(mMoodSaveList);
-        editor.putString("TestList",json);
+        editor.putString("Mood_List",json);
         editor.apply();
     }
 
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         mLastDay = mFirstLaunchToday.getInt("IsFirstLaunchToday",mLastDay);
         SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mMoodSavePref.getString("Mood_Json", null);
+        String json = mMoodSavePref.getString("Mood_List", null);
         Type type = new TypeToken<List<MoodSave>>() {}.getType();
         mMoodSaveList = gson.fromJson(json, type);
         listCreate();   // create a first list if first launch or deleted list
