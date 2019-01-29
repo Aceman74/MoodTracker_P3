@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">MoodTracker</string>
+    <string name="title_activity_very_happy">Très bonne</string>
+    <string name="title_activity_normal">Normale</string>
+    <string name="title_activity_bad">Mauvaise</string>
+    <string name="title_activity_very_bad">Très Mauvaise</string>
+    <string name="mood_history">Voir son historique sur 7 jours !</string>
+    <string name="Actual_mood">Est ce bien ton humeur ?</string>
+    <string name="Add_Note">Dites ce que vous avez envie !</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="one_week">Il y a une semaine</string>
+    <string name="six_day">Il y a 6 jours</string>
+    <string name="five_day">Il y a 5 jours</string>
+    <string name="four_day">Il y a 4 jours</string>
+    <string name="three_day">Il y a 3 jours</string>
+    <string name="yesterday">Hier</string>
+    <string name="two_days">Avant-hier</string>
+    <string name="show_note_of_the_day">Voir la note du jour</string>
+    <string name="mood_is_saved">Humeur Sauvegardée !</string>
+    <string name="sharebody_1">Mon humeur du jour est </string>
+    <string name="sharebody_2"> et je voulais partager ça avec toi !</string>
+    <string name="my_mood"> Mon Humeur </string>
+    <string name="mood_very_bad">Très Mauvaise</string>
+    <string name="mood_bad">Mauvaise</string>
+    <string name="mood_normal">Normale</string>
+    <string name="mood_happy">Bonne</string>
+    <string name="mood_very_happy">Très Bonne</string>
+    <string name="note_save">Note sauvegardée !</string>
+    <string name="note_empty">Note vide !</string>
+    <string name="back">Retour </string>
+    <string name="commentary"> Ajoutez une note du jour</string>
+    <string name="your_text">Votre Texte </string>
+    <string name="confirm">Confirmer</string>
+
+</resources>

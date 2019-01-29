@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,6 +24,8 @@ public class NoteMaker extends Dialog {
     @BindView(R.id.activity_note_edit_txt) EditText mWriteText;
     @BindView(R.id.activity_note_validate_btn) Button mValidate;
     @BindView(R.id.activity_note_cancel_btn) Button mCancel;
+    @BindString(R.string.note_save) String mNoteSaved;
+    @BindString(R.string.back) String mBack;
     private String mToastText;
     public static boolean mIsNote;
 
@@ -40,7 +43,7 @@ public class NoteMaker extends Dialog {
             String mAddNote = mWriteText.getText().toString();
             dayNote(mAddNote);
             mIsNote = true;
-            setMText("Note sauvegardée!");
+            setMText(mNoteSaved);
             customToast();
             hide();
         });
@@ -48,7 +51,7 @@ public class NoteMaker extends Dialog {
         mCancel.setOnClickListener(v -> {
             cancel();
             mIsNote = false;
-            setMText("Retour");
+            setMText(mBack);
             customToast();
         });
     }

@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,10 +51,18 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.activity_main_note_btn) ImageButton mNote;
     @BindView(R.id.activity_main_history_btn) ImageButton mHistory;
     @BindView(R.id.activity_main_share) ImageButton mShare;
+    @BindString(R.string.mood_is_saved) String mSavedString;
+    @BindString(R.string.sharebody_1) String mShareString_1;
+    @BindString(R.string.sharebody_2) String mShareString_2;
+    @BindString(R.string.my_mood) String mMyMoodString;
+    @BindString(R.string.mood_very_bad) String mMoodVeryBad;
+    @BindString(R.string.mood_bad) String mMoodBad;
+    @BindString(R.string.mood_normal) String mMoodNormal;
+    @BindString(R.string.mood_happy) String mMoodHappy;
+    @BindString(R.string.mood_very_happy) String mMoodVeryHappy;
     private List<MoodSave> mMoodSaveList;
     public int mLastDay;
-    private String mMood = "happy";
-    private String mMoodFr;
+    private String mMood = "Happy";
     private MediaPlayer mSound;
     private int mCurrentPos = 3;
 
@@ -81,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             mShare.startAnimation(pulse);
             mSound.start();    // sound on smiley click
             mSmiley.startAnimation(shake);  // anim on smiley click
-            Toast.makeText(getApplication(),"Humeur sauvegardée!",Toast.LENGTH_SHORT ).show();
+            Toast.makeText(getApplication(),mSavedString,Toast.LENGTH_SHORT ).show();
         });
 
         mNote.setOnClickListener(v -> {
@@ -104,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
     private void shareClick() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Mon humeur du jour est " +mMoodFr+ " et je voulais partager ça avec toi !" ;
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Mon Humeur");
+        String shareBody = mShareString_1 + " "+mMood+" " + mShareString_2 ;
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mMyMoodString);
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
@@ -197,14 +206,14 @@ public class MainActivity extends AppCompatActivity {
     protected void listCreate(){
         if(mMoodSaveList == null){
             mMoodSaveList = new ArrayList<>();
-            mMoodSaveList.add(0,new MoodSave(getToday()-7,"very_bad", false,null));
-            mMoodSaveList.add(1,new MoodSave(getToday()-6,"baad", true,"Mauvaise journée!"));
-            mMoodSaveList.add(2,new MoodSave(getToday()-5,"normal", false,null));
-            mMoodSaveList.add(3,new MoodSave(getToday()-4,"happy", false,null));
-            mMoodSaveList.add(4,new MoodSave(getToday()-3,"very_happy", true,"Belle Journée!!"));
-            mMoodSaveList.add(5,new MoodSave(getToday()-2,"happy", false,null));
-            mMoodSaveList.add(6,new MoodSave(getToday()-1,"very_bad", true,"Grrr quel mauvais temps..."));
-            mMoodSaveList.add(7,new MoodSave(getToday(),"happy", false,null));
+            mMoodSaveList.add(0,new MoodSave(getToday()-7,"Very Bad", false,null));
+            mMoodSaveList.add(1,new MoodSave(getToday()-6,"Bad", true,"Mauvaise journée!"));
+            mMoodSaveList.add(2,new MoodSave(getToday()-5,"Normal", false,null));
+            mMoodSaveList.add(3,new MoodSave(getToday()-4,"Happy", false,null));
+            mMoodSaveList.add(4,new MoodSave(getToday()-3,"Very Happy", true,"Belle Journée!!"));
+            mMoodSaveList.add(5,new MoodSave(getToday()-2,"Happy", false,null));
+            mMoodSaveList.add(6,new MoodSave(getToday()-1,"Very Bad", true,"Grrr quel mauvais temps..."));
+            mMoodSaveList.add(7,new MoodSave(getToday(),"Happy", false,null));
             saveData();
         }
     }
@@ -231,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 mMoodSaveList.set(5, mMoodSaveList.get(6));
                 mMoodSaveList.set(6, mMoodSaveList.get(7));
                 mMoodSaveList.remove(7);
-                mMoodSaveList.add(7,new MoodSave(today- dayleft,"happy", false,null));
+                mMoodSaveList.add(7,new MoodSave(today- dayleft,"Happy", false,null));
                 mLastDay++;
                 dayleft--;
             }
@@ -248,36 +257,31 @@ public class MainActivity extends AppCompatActivity {
             switch (mCurrentPos){
 
                 case 0:
-                    mMood = "very_bad";
-                    mMoodFr = "Très Mauvaise";
+                    mMood = mMoodVeryBad;
                     mFrame.setBackgroundResource(R.color.faded_red);
                     mSmiley.setImageResource(R.drawable.smiley_sad);
                     mSound = MediaPlayer.create(this,R.raw.very_bad);
                     break;
                 case 1:
-                    mMood = "baad";
-                    mMoodFr = "Mauvaise";
+                    mMood = mMoodBad;
                     mFrame.setBackgroundResource(R.color.warm_grey);
                     mSmiley.setImageResource(R.drawable.smiley_disappointed);
                     mSound = MediaPlayer.create(this,R.raw.bad);
                     break;
                 case 2:
-                    mMood = "normal";
-                    mMoodFr = "Normale";
+                    mMood = mMoodNormal;
                     mFrame.setBackgroundResource(R.color.cornflower_blue_65);
                     mSmiley.setImageResource(R.drawable.smiley_normal);
                     mSound = MediaPlayer.create(this,R.raw.normal);
                     break;
                 case 3:
-                    mMood = "happy";
-                    mMoodFr = "Bonne";
+                    mMood = mMoodHappy;
                     mFrame.setBackgroundResource(R.color.light_sage);
                     mSmiley.setImageResource(R.drawable.smiley_happy);
                     mSound = MediaPlayer.create(this,R.raw.happy);
                     break;
                 case 4:
-                    mMood = "very_happy";
-                    mMoodFr = "Très Bonne";
+                    mMood = mMoodVeryHappy;
                     mFrame.setBackgroundResource(R.color.banana_yellow);
                     mSmiley.setImageResource(R.drawable.smiley_super_happy);
                     mSound = MediaPlayer.create(this,R.raw.very_happy);

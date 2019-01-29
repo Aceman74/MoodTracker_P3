@@ -14,6 +14,10 @@ import com.aceman.moodtracker.R;
 
 import java.util.List;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.aceman.moodtracker.model.MoodSave.getToday;
 
 /**
@@ -74,27 +78,56 @@ public class HistoryAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int i, View view, ViewGroup parent) {
-        view = inflater.inflate(R.layout.activity_history, null);
+        ViewHolder holder;
+
+        if(view==null) {
+            view = inflater.inflate(R.layout.activity_history, null);
+            // well set up the ViewHolder
+            holder = new ViewHolder(view);
+            view.setTag(holder);
+        }else
+        {
+            holder = (ViewHolder) view.getTag();
+
+        }
 
         MoodSave actualItem = (MoodSave) getItem(i);
         int Day = actualItem.getDay();
         String Mood = actualItem.getMood();
         boolean Note = actualItem.getNote();
         String NoteWrite = actualItem.getAddNote();
-        TextView DayView = view.findViewById(R.id.history_day_text);
-        LinearLayout HistoryBack = view.findViewById(R.id.mood_color);
-        ImageButton NoteBtn = view.findViewById(R.id.history_comment_btn);
         // TextView MoodView = view.findViewById(R.id.history_mood_text); // Used for testing
 
         // DayView.setText(Day);     // Used for testing
         // MoodView.setText(Mood);   // Used for testing
-        setDayOfWeek(Day,DayView);
-        DayView.setHeight(90);
-        NoteBtn.setPadding(0,0,50,130);
-        noteShow(Note,NoteWrite,NoteBtn);
-        moodColorBack(Mood,HistoryBack);
+        setDayOfWeek(Day,holder.DayView,holder);
+        holder.DayView.setHeight(90);
+        holder.NoteBtn.setPadding(0,0,50,130);
+        noteShow(Note,NoteWrite,holder.NoteBtn);
+        moodColorBack(Mood,holder.HistoryBack);
         return view;
     }
+
+    /**
+     * Binding view for ButterKnife with a ViewHolder
+     */
+    static final class ViewHolder {
+        @BindView(R.id.history_day_text) TextView DayView;
+        @BindView(R.id.mood_color) LinearLayout HistoryBack;
+        @BindView(R.id.history_comment_btn) ImageButton NoteBtn;
+        @BindString(R.string.yesterday) String mYesterday;
+        @BindString(R.string.two_days) String mTwoDays;
+        @BindString(R.string.three_day) String mThreeDays;
+        @BindString(R.string.four_day) String mFourDays;
+        @BindString(R.string.five_day) String mFiveDays;
+        @BindString(R.string.six_day) String mSixDays;
+        @BindString(R.string.one_week) String mOneWeek;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
     /**
      * Set the background color for moods.
      * @param Mood get the mood saved
@@ -104,19 +137,19 @@ public class HistoryAdapter extends BaseAdapter {
 
         if(Mood!=null){
             switch (Mood){
-                case "happy":
+                case "Happy":
                     HistoryBack.setBackgroundResource(R.color.light_sage);
                     break;
-                case "very_happy":
+                case "Very Happy":
                     HistoryBack.setBackgroundResource(R.color.banana_yellow);
                     break;
-                case "normal":
+                case "Normal":
                     HistoryBack.setBackgroundResource(R.color.cornflower_blue_65);
                     break;
-                case "baad":
+                case "Bad":
                     HistoryBack.setBackgroundResource(R.color.warm_grey);
                     break;
-                case "very_bad":
+                case "Very Bad":
                     HistoryBack.setBackgroundResource(R.color.faded_red);
                     break;
                 default:
@@ -124,6 +157,7 @@ public class HistoryAdapter extends BaseAdapter {
             }
         }
     }
+
     /**
      * Show day note if there is one.
      * @param Note boolean to return a note
@@ -139,28 +173,29 @@ public class HistoryAdapter extends BaseAdapter {
                 Toast.makeText(context,NoteWrite,Toast.LENGTH_LONG).show());
         }
     }
+
     /**
      * Set the day of each cell for history.
      * @param Day get the day save in the List
      * @param DayView set the day in String
      * @see MoodSave#getToday()
      */
-    private void setDayOfWeek(int Day, TextView DayView ){
+    private void setDayOfWeek(int Day, TextView DayView, ViewHolder holder ){
 
         if(Day == getToday()-1){
-            DayView.setText("Hier");
+            DayView.setText(holder.mYesterday);
         }if(Day == getToday()-2){
-            DayView.setText("Avant-hier");
+            DayView.setText(holder.mTwoDays);
         }if(Day == getToday()-3){
-            DayView.setText("Il y a 3 jours");
+            DayView.setText(holder.mThreeDays);
         }if(Day == getToday()-4){
-            DayView.setText("Il y a 4 jours");
+            DayView.setText(holder.mFourDays);
         }if(Day == getToday()-5){
-            DayView.setText("Il y a 5 jours");
+            DayView.setText(holder.mFiveDays);
         }if(Day == getToday()-6){
-            DayView.setText("Il y a 6 jours");
+            DayView.setText(holder.mSixDays);
         }if(Day == getToday()-7){
-            DayView.setText("Il y a une semaine");
+            DayView.setText(holder.mOneWeek);
         }
     }
 }
