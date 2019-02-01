@@ -40,14 +40,21 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadData();
-        getSharedPreferences("MoodSave", MODE_PRIVATE);
         setContentView(R.layout.adapter_history);
         ButterKnife.bind(this);
         System.out.println("HistoryActivity:onCreate()");
         mMoodDayListView.setAdapter(new HistoryAdapter(this, mMoodSaveList.subList(0,7)));    // To get only 7 days
-
-
     }
+
+    /**
+     * Added a sliding animation when back button is pressed.
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_top_left, R.anim.slide_out_top_left);
+    }
+
     /**
      * Load the mood List.
      */
@@ -63,47 +70,4 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Added a sliding animation when back button is pressed.
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_top_left, R.anim.slide_out_top_left);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        out.println("HistoryActivity::onStart()");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        out.println("HistoryActivity::onResume()");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        out.println("HistoryActivity::onPause()");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        out.println("HistoryActivity::onStop()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        out.println("HistoryActivity::onDestroy()");
-    }
 }

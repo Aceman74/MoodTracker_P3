@@ -34,9 +34,9 @@ public class HistoryAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<MoodSave> mHistoryViewerList;
 
-    public HistoryAdapter(Context context, List<MoodSave> HistoryViewerList){
+    public HistoryAdapter(Context context, List<MoodSave> historyViewerList){
         this.context = context;
-        this.mHistoryViewerList = HistoryViewerList;
+        this.mHistoryViewerList = historyViewerList;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -82,18 +82,16 @@ public class HistoryAdapter extends BaseAdapter {
 
         if(view==null) {
             view = inflater.inflate(R.layout.activity_history, null);
-            // well set up the ViewHolder
             holder = new ViewHolder(view);
             view.setTag(holder);
-        }else
+        } else
         {
             holder = (ViewHolder) view.getTag();
-
         }
 
         MoodSave actualItem = (MoodSave) getItem(i);
         int Day = actualItem.getDay();
-        String Mood = actualItem.getMood();
+        int Mood = actualItem.getMood();
         boolean Note = actualItem.getNote();
         String NoteWrite = actualItem.getAddNote();
         // TextView MoodView = view.findViewById(R.id.history_mood_text); // Used for testing
@@ -101,8 +99,6 @@ public class HistoryAdapter extends BaseAdapter {
         // DayView.setText(Day);     // Used for testing
         // MoodView.setText(Mood);   // Used for testing
         setDayOfWeek(Day,holder.DayView,holder);
-        holder.DayView.setHeight(90);
-        holder.NoteBtn.setPadding(0,0,50,130);
         noteShow(Note,NoteWrite,holder.NoteBtn);
         moodColorBack(Mood,holder.HistoryBack);
         return view;
@@ -130,72 +126,65 @@ public class HistoryAdapter extends BaseAdapter {
 
     /**
      * Set the background color for moods.
-     * @param Mood get the mood saved
-     * @param HistoryBack set the background color for the mood
+     * @param mood get the mood saved
+     * @param historyBack set the background color for the mood
      */
-    private void moodColorBack(String Mood, LinearLayout HistoryBack) {
+    private void moodColorBack(int mood, LinearLayout historyBack) {
 
-        if(Mood!=null){
-            switch (Mood){
-                case "Happy":
-                    HistoryBack.setBackgroundResource(R.color.light_sage);
+            switch (mood){
+                case 0: historyBack.setBackgroundResource(R.color.faded_red);
                     break;
-                case "Very Happy":
-                    HistoryBack.setBackgroundResource(R.color.banana_yellow);
+                case 1: historyBack.setBackgroundResource(R.color.warm_grey);
                     break;
-                case "Normal":
-                    HistoryBack.setBackgroundResource(R.color.cornflower_blue_65);
+                case 2: historyBack.setBackgroundResource(R.color.cornflower_blue_65);
                     break;
-                case "Bad":
-                    HistoryBack.setBackgroundResource(R.color.warm_grey);
+                case 3: historyBack.setBackgroundResource(R.color.light_sage);
                     break;
-                case "Very Bad":
-                    HistoryBack.setBackgroundResource(R.color.faded_red);
+                case 4: historyBack.setBackgroundResource(R.color.banana_yellow);
                     break;
-                default:
-                    HistoryBack.setBackgroundResource(R.color.banana_yellow);
+                default: historyBack.setBackgroundResource(R.color.colorPrimaryDark);
             }
         }
-    }
+
 
     /**
      * Show day note if there is one.
-     * @param Note boolean to return a note
-     * @param NoteWrite the string containing the note
-     * @param NoteBtn show or hide the note button
+     * @param mNote boolean to return a note
+     * @param noteWrite the string containing the note
+     * @param noteBtn show or hide the note button
      */
-    private void noteShow(boolean Note, final String NoteWrite, ImageButton NoteBtn){
+    private void noteShow(boolean mNote, final String noteWrite, ImageButton noteBtn){
 
-        if(Note == false){
-            NoteBtn.setVisibility(View.INVISIBLE);
-            NoteBtn.setClickable(false);
-        }else{ NoteBtn.setOnClickListener(v ->
-                Toast.makeText(context,NoteWrite,Toast.LENGTH_LONG).show());
+        if(!mNote){
+            noteBtn.setVisibility(View.INVISIBLE);
+            noteBtn.setClickable(false);
+        }else{ noteBtn.setOnClickListener(v ->
+                Toast.makeText(context, noteWrite, Toast.LENGTH_LONG).show());
         }
     }
 
     /**
      * Set the day of each cell for history.
      * @param Day get the day save in the List
-     * @param DayView set the day in String
+     * @param dayView set the day in String
      * @see MoodSave#getToday()
      */
-    private void setDayOfWeek(int Day, TextView DayView, ViewHolder holder ){
+    private void setDayOfWeek(int Day, TextView dayView, ViewHolder holder ){
 
         if(Day == getToday()-1){
-            DayView.setText(holder.mYesterday);
+            dayView.setText(holder.mYesterday);
         }if(Day == getToday()-2){
-            DayView.setText(holder.mTwoDays);
+            dayView.setText(holder.mTwoDays);
         }if(Day == getToday()-3){
-            DayView.setText(holder.mThreeDays);
+            dayView.setText(holder.mThreeDays);
         }if(Day == getToday()-4){
-            DayView.setText(holder.mFourDays);
+            dayView.setText(holder.mFourDays);
         }if(Day == getToday()-5){
-            DayView.setText(holder.mFiveDays);
+            dayView.setText(holder.mFiveDays);
         }if(Day == getToday()-6){
-            DayView.setText(holder.mSixDays);
+            dayView.setText(holder.mSixDays);
         }if(Day == getToday()-7){
-            DayView.setText(holder.mOneWeek);
+            dayView.setText(holder.mOneWeek);
         }
     }
 }

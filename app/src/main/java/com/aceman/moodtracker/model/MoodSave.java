@@ -14,21 +14,21 @@ import java.util.Calendar;
 public class MoodSave {
 
     private int mDay;
-    private String mMood;
+    private int mMood;
     private boolean mNote;
     private String mAddNote;
 
     /**
      * Setting the informations to save.
-     * @param Day Actual day
-     * @param Mood actual screen mood
-     * @param Note boolean check for note added
+     * @param day Actual day
+     * @param mood actual screen mood
+     * @param note boolean check for note added
      * @param AddNote note as String
      */
-    public MoodSave(int Day , String Mood, boolean Note, String AddNote){
-        this.mDay = Day;
-        this.mMood = Mood;
-        this.mNote = Note;
+    public MoodSave(int day , int mood, boolean note, String AddNote){
+        this.mDay = day;
+        this.mMood = mood;
+        this.mNote = note;
         this.mAddNote = AddNote;
     }
 
@@ -36,7 +36,7 @@ public class MoodSave {
         return mDay;
     }
 
-    String getMood(){
+    int getMood(){
         return mMood;
     }
 

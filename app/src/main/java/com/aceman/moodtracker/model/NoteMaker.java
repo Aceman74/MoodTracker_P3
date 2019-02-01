@@ -11,6 +11,7 @@ import com.aceman.moodtracker.R;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * NoteMaker is the class who save the note of the day.
@@ -38,22 +39,24 @@ public class NoteMaker extends Dialog {
         super(mActivity, R.style.CustomDialog);
         setContentView(R.layout.activity_note);
         ButterKnife.bind(this);
+    }
 
-        mValidate.setOnClickListener(v -> {
-            String mAddNote = mWriteText.getText().toString();
-            dayNote(mAddNote);
-            mIsNote = true;
-            setMText(mNoteSaved);
-            customToast();
-            hide();
-        });
+    @OnClick(R.id.activity_note_validate_btn)
+    void onClickValidate(){
+        String mAddNote = mWriteText.getText().toString();
+        dayNote(mAddNote);
+        mIsNote = true;
+        setMText(mNoteSaved);
+        customToast();
+        hide();
+    }
 
-        mCancel.setOnClickListener(v -> {
-            cancel();
-            mIsNote = false;
-            setMText(mBack);
-            customToast();
-        });
+    @OnClick(R.id.activity_note_cancel_btn)
+    void onClickCancel(){
+        cancel();
+        mIsNote = false;
+        setMText(mBack);
+        customToast();
     }
 
     /**
