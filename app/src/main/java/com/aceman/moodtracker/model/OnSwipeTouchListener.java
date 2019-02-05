@@ -7,7 +7,7 @@ import android.view.View;
 
 /**
  * Swipe listnener class
- *
+ * <p>
  * Created by Lionel JOFFRAY - on 01/02/2019.
  */
 public class OnSwipeTouchListener implements View.OnTouchListener {
@@ -20,6 +20,18 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
         return gestureDetector.onTouchEvent(motionEvent);
+    }
+
+    protected void onSwipeRight() {
+    }
+
+    protected void onSwipeLeft() {
+    }
+
+    protected void onSwipeUp() {
+    }
+
+    protected void onSwipeDown() {
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -61,17 +73,5 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
             }
             return result;
         }
-    }
-
-    public void onSwipeRight() {
-    }
-
-    public void onSwipeLeft() {
-    }
-
-    public void onSwipeUp() {
-    }
-
-    public void onSwipeDown() {
     }
 }

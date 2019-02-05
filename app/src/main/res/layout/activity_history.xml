@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout
-    android:id="@+id/mood_color"
+<LinearLayout android:id="@+id/mood_color"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -20,7 +19,7 @@
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:id="@+id/history_mood_text"
@@ -28,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:textColor="@android:color/black"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/history_comment_btn"
@@ -39,6 +38,6 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="35dp"
         android:background="@android:color/transparent"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

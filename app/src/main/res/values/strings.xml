@@ -31,4 +31,7 @@
     <string name="commentary"> Add a Note for Today</string>
     <string name="your_text">Your Text </string>
     <string name="confirm">Confirm</string>
+    <string name="example_1">What a bad day !</string>
+    <string name="example_2">it\'\s a good day !</string>
+    <string name="example_3">What a bad weather …</string>
 </resources>

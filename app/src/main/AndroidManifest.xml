@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         tools:replace="android:appComponentFactory"
         android:appComponentFactory="whateverString"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".controller.HistoryActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

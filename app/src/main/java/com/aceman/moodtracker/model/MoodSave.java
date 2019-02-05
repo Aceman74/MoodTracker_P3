@@ -20,41 +20,43 @@ public class MoodSave {
 
     /**
      * Setting the informations to save.
-     * @param day Actual day
-     * @param mood actual screen mood
-     * @param note boolean check for note added
+     *
+     * @param day     Actual day
+     * @param mood    actual screen mood
+     * @param note    boolean check for note added
      * @param AddNote note as String
      */
-    public MoodSave(int day , int mood, boolean note, String AddNote){
+    public MoodSave(int day, int mood, boolean note, String AddNote) {
         this.mDay = day;
         this.mMood = mood;
         this.mNote = note;
         this.mAddNote = AddNote;
     }
 
-    int getDay(){
-        return mDay;
-    }
-
-    int getMood(){
-        return mMood;
-    }
-
-    boolean getNote(){
-        return mNote;
-    }
-
-    String getAddNote(){
-        return mAddNote;
-    }
-
     /**
      * Get the DAY_OF_YEAR
+     *
      * @return the day of the year
      * @see Calendar
      */
-    public static int getToday(){
+    public static int getToday() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_YEAR);
+    }
+
+    int getDay() {
+        return mDay;
+    }
+
+    int getMood() {
+        return mMood;
+    }
+
+    boolean getNote() {
+        return mNote;
+    }
+
+    String getAddNote() {
+        return mAddNote;
     }
 }

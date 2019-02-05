@@ -22,17 +22,23 @@ import butterknife.OnClick;
 public class NoteMaker extends Dialog {
 
     public static String mAddNote;
-    @BindView(R.id.activity_note_edit_txt) EditText mWriteText;
-    @BindView(R.id.activity_note_validate_btn) Button mValidate;
-    @BindView(R.id.activity_note_cancel_btn) Button mCancel;
-    @BindString(R.string.note_save) String mNoteSaved;
-    @BindString(R.string.back) String mBack;
-    private String mToastText;
     public static boolean mIsNote;
+    @BindView(R.id.activity_note_edit_txt)
+    EditText mWriteText;
+    @BindView(R.id.activity_note_validate_btn)
+    Button mValidate;
+    @BindView(R.id.activity_note_cancel_btn)
+    Button mCancel;
+    @BindString(R.string.note_save)
+    String mNoteSaved;
+    @BindString(R.string.back)
+    String mBack;
+    private String mToastText;
 
     /**
      * Add a note if clicked on the Note button on all mood activity.<br>
      * Open a custom Dialog layout.
+     *
      * @param mActivity the current activity
      */
     public NoteMaker(final Activity mActivity) {
@@ -42,7 +48,7 @@ public class NoteMaker extends Dialog {
     }
 
     @OnClick(R.id.activity_note_validate_btn)
-    void onClickValidate(){
+    void onClickValidate() {
         String mAddNote = mWriteText.getText().toString();
         dayNote(mAddNote);
         mIsNote = true;
@@ -52,7 +58,7 @@ public class NoteMaker extends Dialog {
     }
 
     @OnClick(R.id.activity_note_cancel_btn)
-    void onClickCancel(){
+    void onClickCancel() {
         cancel();
         mIsNote = false;
         setMText(mBack);
@@ -62,23 +68,24 @@ public class NoteMaker extends Dialog {
     /**
      * Create the popup in activity on click on addnote button.
      */
-    public void buidNotePopup(){
+    public void buidNotePopup() {
         show();
     }
 
-    private void customToast(){
-        Toast.makeText(getContext(),mToastText,Toast.LENGTH_SHORT ).show();
+    private void customToast() {
+        Toast.makeText(getContext(), mToastText, Toast.LENGTH_SHORT).show();
     }
 
-    private void setMText(String mToastText){
+    private void setMText(String mToastText) {
         this.mToastText = mToastText;
     }
 
     /**
      * Save the Note in a String.
+     *
      * @param addNote actual note
      */
-    private void dayNote(String addNote){
+    private void dayNote(String addNote) {
         mAddNote = addNote;
     }
 

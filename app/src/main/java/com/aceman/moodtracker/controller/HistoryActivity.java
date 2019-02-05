@@ -1,12 +1,12 @@
 package com.aceman.moodtracker.controller;
 
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
-import com.aceman.moodtracker.model.HistoryAdapter;
 import com.aceman.moodtracker.R;
+import com.aceman.moodtracker.model.HistoryAdapter;
 import com.aceman.moodtracker.model.MoodSave;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,22 +18,23 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static java.lang.System.out;
 /**
  * <b>History activity</b> use to set the history with adapter.
- * @see MoodSave
- * @see HistoryAdapter
  *
  * @author Aceman
  * Created by Lionel JOFFRAY - on 18/01/2019.
+ * @see MoodSave
+ * @see HistoryAdapter
  */
 public class HistoryActivity extends AppCompatActivity {
 
-    @BindView(R.id.list_view) ListView mMoodDayListView;
+    @BindView(R.id.list_view)
+    ListView mMoodDayListView;
     private List<MoodSave> mMoodSaveList;
 
     /**
      * Setting the adapter with the List
+     *
      * @param savedInstanceState save instance
      */
     @Override
@@ -43,7 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.adapter_history);
         ButterKnife.bind(this);
         System.out.println("HistoryActivity:onCreate()");
-        mMoodDayListView.setAdapter(new HistoryAdapter(this, mMoodSaveList.subList(0,7)));    // To get only 7 days
+        mMoodDayListView.setAdapter(new HistoryAdapter(this, mMoodSaveList.subList(0, 7)));    // To get only 7 days
     }
 
     /**
@@ -58,14 +59,15 @@ public class HistoryActivity extends AppCompatActivity {
     /**
      * Load the mood List.
      */
-    private void loadData(){
-        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave",MODE_PRIVATE);
+    private void loadData() {
+        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mMoodSavePref.getString("Mood_List", null);
-        Type type = new TypeToken<List<MoodSave>>() {}.getType();
+        Type type = new TypeToken<List<MoodSave>>() {
+        }.getType();
         mMoodSaveList = gson.fromJson(json, type);
 
-        if(mMoodSaveList == null){
+        if (mMoodSaveList == null) {
             mMoodSaveList = new ArrayList<>();
         }
     }

@@ -31,5 +31,8 @@
     <string name="commentary"> Añada una nota de día</string>
     <string name="your_text">Su texto </string>
     <string name="confirm">Confirmar</string>
+    <string name="example_1">Qué mal día !</string>
+    <string name="example_2">Es un buen día !</string>
+    <string name="example_3">Qué mal tiempo …</string>
 
 </resources>
