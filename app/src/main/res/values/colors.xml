@@ -10,6 +10,7 @@
     <color name="cornflower_blue_65">#a5468ad9</color>
     <color name="light_sage">#ffb8e986</color>
     <color name="banana_yellow">#fff9ec4f</color>
-
     <color name="black_overlay">#66000000</color>
+    <color name="darker_gray">#AAAAAA</color>
+    <color name="transparent">#00000000</color>
 </resources>

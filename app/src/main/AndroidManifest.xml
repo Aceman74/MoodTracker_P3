@@ -15,10 +15,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".controller.HistoryActivity"
+            android:name=".UI.HistoryActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".controller.MainActivity"
+            android:name=".UI.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

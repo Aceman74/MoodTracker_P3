@@ -34,7 +34,7 @@ public class MoodSave {
     }
 
     /**
-     * Get the DAY_OF_YEAR
+     * Get the DAY_OF_YEAR.
      *
      * @return the day of the year
      * @see Calendar

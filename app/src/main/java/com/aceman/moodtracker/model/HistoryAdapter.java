@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.aceman.moodtracker.UI.MainActivity.*;
 import static com.aceman.moodtracker.model.MoodSave.getToday;
 
 /**
@@ -26,7 +28,7 @@ import static com.aceman.moodtracker.model.MoodSave.getToday;
  * @author Aceman
  * Created by Lionel JOFFRAY - on 18/01/2019.
  * @see MoodSave
- * @see com.aceman.moodtracker.controller.HistoryActivity
+ * @see com.aceman.moodtracker.UI.HistoryActivity
  */
 public class HistoryAdapter extends BaseAdapter {
 
@@ -38,6 +40,7 @@ public class HistoryAdapter extends BaseAdapter {
         this.context = context;
         this.mHistoryViewerList = historyViewerList;
         this.inflater = LayoutInflater.from(context);
+
     }
 
     /**
@@ -84,6 +87,7 @@ public class HistoryAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup parent) {
         ViewHolder holder;
 
+
         if (view == null) {
             view = inflater.inflate(R.layout.activity_history, null);
             holder = new ViewHolder(view);
@@ -97,10 +101,6 @@ public class HistoryAdapter extends BaseAdapter {
         int Mood = actualItem.getMood();
         boolean Note = actualItem.getNote();
         String NoteWrite = actualItem.getAddNote();
-        // TextView MoodView = view.findViewById(R.id.history_mood_text); // Used for testing
-
-        // DayView.setText(Day);     // Used for testing
-        // MoodView.setText(Mood);   // Used for testing
         setDayOfWeek(Day, holder.DayView, holder);
         noteShow(Note, NoteWrite, holder.NoteBtn);
         moodColorBack(Mood, holder.HistoryBack);
@@ -108,7 +108,7 @@ public class HistoryAdapter extends BaseAdapter {
     }
 
     /**
-     * Set the background color for moods.
+     * Set the background color for moods and the size.
      *
      * @param mood        get the mood saved
      * @param historyBack set the background color for the mood
@@ -118,21 +118,27 @@ public class HistoryAdapter extends BaseAdapter {
         switch (mood) {
             case 0:
                 historyBack.setBackgroundResource(R.color.faded_red);
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/5, (mHeight-100)/7));
                 break;
             case 1:
                 historyBack.setBackgroundResource(R.color.warm_grey);
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/3, (mHeight-100)/7));
                 break;
             case 2:
                 historyBack.setBackgroundResource(R.color.cornflower_blue_65);
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/2, (mHeight-100)/7));
                 break;
             case 3:
                 historyBack.setBackgroundResource(R.color.light_sage);
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth-(mWidth/4), (mHeight-100)/7));
                 break;
             case 4:
                 historyBack.setBackgroundResource(R.color.banana_yellow);
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight-100)/7));
                 break;
             default:
-                historyBack.setBackgroundResource(R.color.colorPrimaryDark);
+                historyBack.setBackgroundResource(R.color.darker_gray);
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight-100)/7));
         }
     }
 
@@ -187,7 +193,7 @@ public class HistoryAdapter extends BaseAdapter {
     }
 
     /**
-     * Binding view for ButterKnife with a ViewHolder
+     * Binding view for ButterKnife with a ViewHolder.
      */
     static final class ViewHolder {
         @BindView(R.id.history_day_text)

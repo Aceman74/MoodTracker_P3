@@ -1,4 +1,4 @@
-package com.aceman.moodtracker.controller;
+package com.aceman.moodtracker.UI;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,7 +33,7 @@ public class HistoryActivity extends AppCompatActivity {
     private List<MoodSave> mMoodSaveList;
 
     /**
-     * Setting the adapter with the List
+     * Setting the adapter with the List.
      *
      * @param savedInstanceState save instance
      */
@@ -43,8 +43,8 @@ public class HistoryActivity extends AppCompatActivity {
         loadData();
         setContentView(R.layout.adapter_history);
         ButterKnife.bind(this);
-        System.out.println("HistoryActivity:onCreate()");
         mMoodDayListView.setAdapter(new HistoryAdapter(this, mMoodSaveList.subList(0, 7)));    // To get only 7 days
+
     }
 
     /**
@@ -60,9 +60,9 @@ public class HistoryActivity extends AppCompatActivity {
      * Load the mood List.
      */
     private void loadData() {
-        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave", MODE_PRIVATE);
+        SharedPreferences mMoodSavePref = getSharedPreferences(MainActivity.SPMoodSave, MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mMoodSavePref.getString("Mood_List", null);
+        String json = mMoodSavePref.getString(MainActivity.SPMoodSaveList, null);
         Type type = new TypeToken<List<MoodSave>>() {
         }.getType();
         mMoodSaveList = gson.fromJson(json, type);

@@ -1,21 +1,23 @@
-package com.aceman.moodtracker.controller;
+package com.aceman.moodtracker.UI;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.view.Display;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
 import com.aceman.moodtracker.model.MoodSave;
-import com.aceman.moodtracker.model.NoteMaker;
 import com.aceman.moodtracker.model.OnSwipeTouchListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,17 +32,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.aceman.moodtracker.model.MoodSave.getToday;
-import static com.aceman.moodtracker.model.NoteMaker.mAddNote;
-import static com.aceman.moodtracker.model.NoteMaker.mIsNote;
 
 /**
  * * MoodTracker<br>
- * Version 1.0<br>
+ * Version 1.2<br>
  *
- * <b>Main class</b> is where the user choose his mood by swiping and it contains three buttons:<br>
- * - Smiley (center) who save the actual mood<br>
- * - Note (bot left) who add a note with the mood<br>
+ * <b>Main class</b> is where the user choose his mood by swiping and contains three buttons:<br>
+ * - Smiley (center) who shake and make sound on click <br>
+ * - Note (bot left) who add a note with the mood <br>
  * - History for seeing history on 7 days<br>
+ * Mood is automatically saved by swiping <br>
  * mMood: 0 Very Bad, 1 Bad, 2 Normal, 3 Happy, 4 Very Happy<br>
  *
  * @author Aceman
@@ -75,14 +76,39 @@ public class MainActivity extends AppCompatActivity {
     String mMoodHappy;
     @BindString(R.string.mood_very_happy)
     String mMoodVeryHappy;
+    @BindString(R.string.commentary)
+    String mCommentary;
+    @BindString(R.string.Add_Note)
+    String mDescriptionNote;
+    @BindString(R.string.confirm)
+    String mValidate;
+    @BindString(R.string.back)
+    String mCancel;
+    @BindString(R.string.note_save)
+    String mNoteIsSaved;
+    @BindString(R.string.note_empty)
+    String mNoteEmpty;
+    final static String SPLaunch = "LaunchToday";
+    final static String SPLaunchToday = "IsFirstLaunchToday";
+    final static String SPMoodSave = "MoodSave";
+    final static String SPMoodSaveList = "Mood_List";
+    final static String SPMood = "Mood";
+    final static String SPmMood = "mMood";
+    final static String SPNote = "Note";
+    final static String SPNoteSaved = "NoteSaved";
+    public static int mWidth;
+    public static int mHeight;
+    static String mAddNote = null;
+    static boolean mIsNote;
     private List<MoodSave> mMoodSaveList;
     private int mLastDay;
-    private int mMood = 3;
+    private int mMood;
     private String mMoodLang;
     private MediaPlayer mSound;
     private Animation mShake;
     private Animation mPulse;
     private Animation mFadeIn;
+
 
     /**
      * Setting the Main mood view, with smileys and buttons.
@@ -98,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
         mShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake_anim);    // Smiley onclick animation
         mPulse = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse_effect);    //  Share btn pulse effect
         mFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);    //  Smoother transition
-        setMoodOnSwipe();
         loadData();
+        setMoodOnSwipe();
+        screenSize();
 
         mFrame.setOnTouchListener(new OnSwipeTouchListener(this) {      //  Swipe listener
             @Override
@@ -117,26 +144,21 @@ public class MainActivity extends AppCompatActivity {
                 swipeAnim();
             }
         });
+
     }
 
     /**
-     * Click on Smiley center
+     * Click on Smiley center.
      */
     @OnClick(R.id.activity_main_smiley_btn)
     void onClickSmiley() {
-        mMoodSaveList.remove(7);
-        mMoodSaveList.add(7, new MoodSave(getToday(), mMood, mIsNote, mAddNote)); // Temporary save slot
-        saveData();
-        mShare.setClickable(true);
-        mShare.setVisibility(View.VISIBLE);
-        mShare.startAnimation(mPulse);
         mSound.start();    // sound on smiley click
+        mShare.startAnimation(mPulse);
         mSmiley.startAnimation(mShake);  // anim on smiley click
-        Toast.makeText(getApplication(), mSavedString, Toast.LENGTH_SHORT).show();
     }
 
     /**
-     * Click on History button
+     * Click on History button.
      *
      * @see HistoryActivity
      */
@@ -148,18 +170,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Click on Note button
-     *
-     * @see NoteMaker
+     * Click on Note button.
      */
     @OnClick(R.id.activity_main_note_btn)
     void onClickNote() {
-        NoteMaker newNote = new NoteMaker(MainActivity.this);
-        newNote.buidNotePopup();    // add a daily comment
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle(mCommentary);
+        alert.setMessage(mDescriptionNote);
+
+// Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        alert.setView(input);
+        if (mAddNote != null) {
+            input.setText(mAddNote);
+        }
+
+        alert.setPositiveButton(mValidate, (dialog, whichButton) -> {
+
+            mAddNote = input.getText().toString();
+
+            dayNote(mAddNote);
+            mIsNote = true;
+            Toast.makeText(this, mNoteIsSaved, Toast.LENGTH_LONG).show();
+            if (mAddNote.isEmpty()) {
+
+                Toast.makeText(this, mNoteEmpty, Toast.LENGTH_LONG).show();
+                mIsNote = false;
+            }
+            saveMoodToday();
+            saveData();
+        });
+
+        alert.setNegativeButton(mCancel, (dialog, whichButton) -> {
+            if (mAddNote == null || mAddNote.isEmpty()) {
+                mIsNote = false;
+                Toast.makeText(this, mNoteEmpty, Toast.LENGTH_LONG).show();
+                // Canceled.
+            }
+            Toast.makeText(this, mCancel, Toast.LENGTH_LONG).show();
+            saveMoodToday();
+            saveData();
+        });
+
+        alert.show();
     }
 
     /**
-     * Click on Share button after mood selected
+     * Click on Share button .
      */
     @OnClick(R.id.activity_main_share)
     void onClickShare() {
@@ -167,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to initiate/stop animations and sound on swipe
+     * Method to initiate/stop animations and sound on swipe.
      */
     private void swipeAnim() {
         mSound.stop();  // stop sound created with swipe movement
@@ -178,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Share method button who shows after a click on the smiley
+     * Share method button who shows after a click on the smiley.
      */
     private void shareClick() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -197,45 +255,59 @@ public class MainActivity extends AppCompatActivity {
     private void checkLaunchToday() {    // compare date
         if (getToday() != mLastDay) {
             mLastDay = getToday();
+            mMood = 3;              // set mood happy
+            mAddNote = null;        // set note null
         }
     }
 
     /**
-     * Save the mood to a List using Gson.
+     * Saving all necessary values.
      *
      * @see Gson
      * @see MoodSave
      */
     private void saveData() {    // save SharedPreferences and mLastDay
-        SharedPreferences mFirstLaunchToday = getSharedPreferences("LaunchToday", MODE_PRIVATE);
+        SharedPreferences mFirstLaunchToday = getSharedPreferences(SPLaunch, MODE_PRIVATE);
         SharedPreferences.Editor firstLaunch = mFirstLaunchToday.edit();
-        firstLaunch.putInt("IsFirstLaunchToday", mLastDay);
+        firstLaunch.putInt(SPLaunchToday, mLastDay);
         firstLaunch.apply();
-        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave", MODE_PRIVATE);
+        SharedPreferences mMoodSP = getSharedPreferences(SPMood, MODE_PRIVATE);
+        SharedPreferences.Editor mMoodSave = mMoodSP.edit();
+        mMoodSave.putInt(SPmMood, mMood);
+        mMoodSave.apply();
+        SharedPreferences mMoodSavePref = getSharedPreferences(SPMoodSave, MODE_PRIVATE);
         SharedPreferences.Editor editor = mMoodSavePref.edit();
         Gson gson = new Gson();
         String json = gson.toJson(mMoodSaveList);
-        editor.putString("Mood_List", json);
+        editor.putString(SPMoodSaveList, json);
         editor.apply();
+        SharedPreferences noteSave = getSharedPreferences(SPNote, MODE_PRIVATE);
+        SharedPreferences.Editor mNoteSave = noteSave.edit();
+        mNoteSave.putString(SPNoteSaved, mAddNote);
+        mNoteSave.apply();
     }
 
     /**
-     * Load the mood List or create one if first launch ever.
+     * Load the mood List or create one if first launch ever. <br>
+     *     Also load mMood (to show last state mood) and mLastDay to check last launch <br>
      * Also move the items in mMoodSaveList everyday for showing 7 past days in history.
      */
     private void loadData() {
-        SharedPreferences mFirstLaunchToday = getSharedPreferences("LaunchToday", MODE_PRIVATE);
-        mLastDay = mFirstLaunchToday.getInt("IsFirstLaunchToday", mLastDay);
-        SharedPreferences mMoodSavePref = getSharedPreferences("MoodSave", MODE_PRIVATE);
+        SharedPreferences noteSave = getSharedPreferences(SPNote, MODE_PRIVATE);
+        mAddNote = noteSave.getString(SPNoteSaved, mAddNote);
+        SharedPreferences mMoodSP = getSharedPreferences(SPMood, MODE_PRIVATE);
+        mMood = mMoodSP.getInt(SPmMood, mMood);
+        SharedPreferences mFirstLaunchToday = getSharedPreferences(SPLaunch, MODE_PRIVATE);
+        mLastDay = mFirstLaunchToday.getInt(SPLaunchToday, mLastDay);
+        SharedPreferences mMoodSavePref = getSharedPreferences(SPMoodSave, MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = mMoodSavePref.getString("Mood_List", null);
+        String json = mMoodSavePref.getString(SPMoodSaveList, null);
         Type type = new TypeToken<List<MoodSave>>() {
         }.getType();
         mMoodSaveList = gson.fromJson(json, type);
         listCreate();   // create a first list if first launch or deleted list
         saveMover();    // move items on past 7 day if it is a new day
         checkLaunchToday();  // update and check the day
-        saveData();
     }
 
     /**
@@ -244,13 +316,13 @@ public class MainActivity extends AppCompatActivity {
     private void listCreate() {
         if (mMoodSaveList == null) {
             mMoodSaveList = new ArrayList<>();
-            mMoodSaveList.add(0, new MoodSave(getToday() - 7, 0, false, null));
-            mMoodSaveList.add(1, new MoodSave(getToday() - 6, 1, true, "Mauvaise journée!"));
-            mMoodSaveList.add(2, new MoodSave(getToday() - 5, 2, false, null));
-            mMoodSaveList.add(3, new MoodSave(getToday() - 4, 3, false, null));
-            mMoodSaveList.add(4, new MoodSave(getToday() - 3, 4, true, "Belle Journée!!"));
-            mMoodSaveList.add(5, new MoodSave(getToday() - 2, 0, false, null));
-            mMoodSaveList.add(6, new MoodSave(getToday() - 1, 1, true, "Grrr quel mauvais temps..."));
+            mMoodSaveList.add(0, new MoodSave(getToday() - 8, 5, false, null));
+            mMoodSaveList.add(1, new MoodSave(getToday() - 8, 5, false, null));
+            mMoodSaveList.add(2, new MoodSave(getToday() - 8, 5, false, null));
+            mMoodSaveList.add(3, new MoodSave(getToday() - 8, 5, false, null));
+            mMoodSaveList.add(4, new MoodSave(getToday() - 8, 5, false, null));
+            mMoodSaveList.add(5, new MoodSave(getToday() - 8, 5, false, null));
+            mMoodSaveList.add(6, new MoodSave(getToday() - 8, 5, false, null));
             mMoodSaveList.add(7, new MoodSave(getToday(), 3, false, null));
             saveData();
         }
@@ -289,6 +361,7 @@ public class MainActivity extends AppCompatActivity {
      * Get the mMood value to set the mood to show w/ each sound, smiley and background.<br>
      */
     private void setMoodOnSwipe() {
+
         if (mMood <= 4 && mMood >= 0) {
 
             switch (mMood) {
@@ -297,33 +370,78 @@ public class MainActivity extends AppCompatActivity {
                     mFrame.setBackgroundResource(R.color.faded_red);
                     mSmiley.setImageResource(R.drawable.smiley_sad);
                     mSound = MediaPlayer.create(this, R.raw.very_bad);
+                    onSmileyView();
                     break;
                 case 1:
                     mMoodLang = mMoodBad;
                     mFrame.setBackgroundResource(R.color.warm_grey);
                     mSmiley.setImageResource(R.drawable.smiley_disappointed);
                     mSound = MediaPlayer.create(this, R.raw.bad);
+                    onSmileyView();
                     break;
                 case 2:
                     mMoodLang = mMoodNormal;
                     mFrame.setBackgroundResource(R.color.cornflower_blue_65);
                     mSmiley.setImageResource(R.drawable.smiley_normal);
                     mSound = MediaPlayer.create(this, R.raw.normal);
+                    onSmileyView();
                     break;
                 case 3:
                     mMoodLang = mMoodHappy;
                     mFrame.setBackgroundResource(R.color.light_sage);
                     mSmiley.setImageResource(R.drawable.smiley_happy);
                     mSound = MediaPlayer.create(this, R.raw.happy);
+                    onSmileyView();
                     break;
                 case 4:
                     mMoodLang = mMoodVeryHappy;
                     mFrame.setBackgroundResource(R.color.banana_yellow);
                     mSmiley.setImageResource(R.drawable.smiley_super_happy);
                     mSound = MediaPlayer.create(this, R.raw.very_happy);
+                    onSmileyView();
                     break;
 
             }
         }
+    }
+
+
+    /**
+     * Method called for automatic save on swipe.
+     */
+    void onSmileyView() {
+        saveMoodToday(); // Temporary save slot
+        saveData();
+    }
+
+    /**
+     * Get the daynote for MoodSave.
+     * @param addNote note written by user
+     */
+    private void dayNote(String addNote) {
+        mAddNote = addNote;
+    }
+
+    /**
+     * Save slot for the day with note checker.
+     */
+    private void saveMoodToday() {
+        if (mAddNote != null) {
+            mIsNote = true;
+        }
+        mMoodSaveList.remove(7);
+        mMoodSaveList.add(7, new MoodSave(getToday(), mMood, mIsNote, mAddNote));
+    }
+
+    /**
+     * Method to get the device dispay size for History use.
+     * @see com.aceman.moodtracker.model.HistoryAdapter
+     */
+    void screenSize() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        mWidth = size.x;
+        mHeight = size.y;
     }
 }
