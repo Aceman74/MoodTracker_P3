@@ -105,9 +105,11 @@ public class MainActivity extends AppCompatActivity {
     private int mMood;
     private String mMoodLang;
     private MediaPlayer mSound;
-    private Animation mShake;
-    private Animation mPulse;
-    private Animation mFadeIn;
+    public static Animation mShake;
+    public static Animation mPulse;
+    public static Animation mFadeIn;
+    public static Animation mFadeOut;
+    public static Animation mSlideIn;
 
 
     /**
@@ -121,9 +123,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake_anim);    // Smiley onclick animation
-        mPulse = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse_effect);    //  Share btn pulse effect
-        mFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);    //  Smoother transition
+        animSet();
         loadData();
         setMoodOnSwipe();
         screenSize();
@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.activity_main_history_btn)
     void onClickHistory() {
+        mHistory.startAnimation(mFadeOut);
         Intent HistoryActivity = new Intent(getApplicationContext(), HistoryActivity.class);
         startActivity(HistoryActivity); // show history
         overridePendingTransition(R.anim.slide_in_bot_right, R.anim.slide_out_bot_right);
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.activity_main_note_btn)
     void onClickNote() {
+        mNote.startAnimation(mFadeOut);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         alert.setTitle(mCommentary);
@@ -187,16 +189,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         alert.setPositiveButton(mValidate, (dialog, whichButton) -> {
-
             mAddNote = input.getText().toString();
 
             dayNote(mAddNote);
-            mIsNote = true;
             Toast.makeText(this, mNoteIsSaved, Toast.LENGTH_LONG).show();
-            if (mAddNote.isEmpty()) {
-
+            if (mAddNote == null || mAddNote.isEmpty()) {
                 Toast.makeText(this, mNoteEmpty, Toast.LENGTH_LONG).show();
-                mIsNote = false;
             }
             saveMoodToday();
             saveData();
@@ -204,15 +202,12 @@ public class MainActivity extends AppCompatActivity {
 
         alert.setNegativeButton(mCancel, (dialog, whichButton) -> {
             if (mAddNote == null || mAddNote.isEmpty()) {
-                mIsNote = false;
                 Toast.makeText(this, mNoteEmpty, Toast.LENGTH_LONG).show();
-                // Canceled.
             }
             Toast.makeText(this, mCancel, Toast.LENGTH_LONG).show();
             saveMoodToday();
             saveData();
         });
-
         alert.show();
     }
 
@@ -248,19 +243,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Check the first launch of the day.
-     *
-     * @see MoodSave#getToday()
-     */
-    private void checkLaunchToday() {    // compare date
-        if (getToday() != mLastDay) {
-            mLastDay = getToday();
-            mMood = 3;              // set mood happy
-            mAddNote = null;        // set note null
-        }
-    }
-
-    /**
      * Saving all necessary values.
      *
      * @see Gson
@@ -289,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Load the mood List or create one if first launch ever. <br>
-     *     Also load mMood (to show last state mood) and mLastDay to check last launch <br>
+     * Also load mMood (to show last state mood) and mLastDay to check last launch <br>
      * Also move the items in mMoodSaveList everyday for showing 7 past days in history.
      */
     private void loadData() {
@@ -327,6 +309,19 @@ public class MainActivity extends AppCompatActivity {
             saveData();
         }
     }
+    private void listCreateTest() {
+
+            mMoodSaveList = new ArrayList<>();
+            mMoodSaveList.add(0, new MoodSave(getToday() - 7, 0, true, "test"));
+            mMoodSaveList.add(1, new MoodSave(getToday() - 6, 1, true, "test"));
+            mMoodSaveList.add(2, new MoodSave(getToday() - 5, 2, true, "test"));
+            mMoodSaveList.add(3, new MoodSave(getToday() - 4, 3, true, "test"));
+            mMoodSaveList.add(4, new MoodSave(getToday() - 6, 4, true, "test"));
+            mMoodSaveList.add(5, new MoodSave(getToday() - 2, 0, true, "test"));
+            mMoodSaveList.add(6, new MoodSave(getToday() - 1, 1, true, "test"));
+            mMoodSaveList.add(7, new MoodSave(getToday(), 3, false, null));
+            saveData();
+    }
 
     /**
      * Move items on past 7 day if it is a new day.<br>
@@ -355,6 +350,27 @@ public class MainActivity extends AppCompatActivity {
             }
             while (mLastDay < today);
         }
+        resetMood();
+    }
+
+    /**
+     * Check the first launch of the day.
+     *
+     * @see MoodSave#getToday()
+     */
+    private void checkLaunchToday() {    // compare date
+        if (getToday() != mLastDay) {
+            mLastDay = getToday();
+        }
+    }
+
+    /**
+     * Reset mood view and note when launch on new day
+     */
+    private void resetMood() {
+        mMood = 3;              // set mood happy
+        mAddNote = null;        // set note null
+        mIsNote = false;
     }
 
     /**
@@ -400,7 +416,6 @@ public class MainActivity extends AppCompatActivity {
                     mSound = MediaPlayer.create(this, R.raw.very_happy);
                     onSmileyView();
                     break;
-
             }
         }
     }
@@ -416,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Get the daynote for MoodSave.
+     *
      * @param addNote note written by user
      */
     private void dayNote(String addNote) {
@@ -426,7 +442,9 @@ public class MainActivity extends AppCompatActivity {
      * Save slot for the day with note checker.
      */
     private void saveMoodToday() {
-        if (mAddNote != null) {
+        if (mAddNote == null || mAddNote.isEmpty()) {
+            mIsNote = false;
+        } else {
             mIsNote = true;
         }
         mMoodSaveList.remove(7);
@@ -435,6 +453,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to get the device dispay size for History use.
+     *
      * @see com.aceman.moodtracker.model.HistoryAdapter
      */
     void screenSize() {
@@ -443,5 +462,16 @@ public class MainActivity extends AppCompatActivity {
         display.getSize(size);
         mWidth = size.x;
         mHeight = size.y;
+    }
+
+    /**
+     * Initialize animations
+     */
+    void animSet() {
+        mShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake_anim);    // Smiley onclick animation
+        mPulse = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse_effect);    //  Share btn pulse effect
+        mFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);    //  Smoother transition
+        mFadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);    //  Click anim effect
+        mSlideIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right);    //  Historty anim
     }
 }

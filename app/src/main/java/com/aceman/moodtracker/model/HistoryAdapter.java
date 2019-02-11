@@ -118,27 +118,33 @@ public class HistoryAdapter extends BaseAdapter {
         switch (mood) {
             case 0:
                 historyBack.setBackgroundResource(R.color.faded_red);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/5, (mHeight-100)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/5, (mHeight)/7));
+                historyBack.startAnimation(mSlideIn);
                 break;
             case 1:
                 historyBack.setBackgroundResource(R.color.warm_grey);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/3, (mHeight-100)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth/5)*2, (mHeight)/7));
+                historyBack.startAnimation(mSlideIn);
                 break;
             case 2:
                 historyBack.setBackgroundResource(R.color.cornflower_blue_65);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/2, (mHeight-100)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth/5)*3, (mHeight)/7));
+                historyBack.startAnimation(mSlideIn);
                 break;
             case 3:
                 historyBack.setBackgroundResource(R.color.light_sage);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth-(mWidth/4), (mHeight-100)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth/5)*4, (mHeight)/7));
+                historyBack.startAnimation(mSlideIn);
                 break;
             case 4:
                 historyBack.setBackgroundResource(R.color.banana_yellow);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight-100)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight)/7));
+                historyBack.startAnimation(mSlideIn);
                 break;
             default:
                 historyBack.setBackgroundResource(R.color.darker_gray);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight-100)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight)/7));
+                historyBack.startAnimation(mSlideIn);
         }
     }
 
@@ -156,7 +162,11 @@ public class HistoryAdapter extends BaseAdapter {
             noteBtn.setClickable(false);
         } else {
             noteBtn.setOnClickListener(v ->
-                    Toast.makeText(context, noteWrite, Toast.LENGTH_LONG).show());
+            {
+
+                noteBtn.startAnimation(mFadeOut);
+                Toast.makeText(context, noteWrite, Toast.LENGTH_LONG).show();
+            });
         }
     }
 
