@@ -1,14 +1,12 @@
-package com.aceman.moodtracker.UI;
+package com.aceman.moodtracker.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -17,8 +15,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
+import com.aceman.moodtracker.model.ListHandler;
 import com.aceman.moodtracker.model.MoodSave;
-import com.aceman.moodtracker.model.OnSwipeTouchListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -96,13 +94,11 @@ public class MainActivity extends AppCompatActivity {
     final static String SPmMood = "mMood";
     final static String SPNote = "Note";
     final static String SPNoteSaved = "NoteSaved";
-    public static int mWidth;
-    public static int mHeight;
     static String mAddNote = null;
     static boolean mIsNote;
-    private List<MoodSave> mMoodSaveList;
-    private int mLastDay;
-    private int mMood;
+    public static List<MoodSave> mMoodSaveList;
+    public static int mLastDay;
+    public static int mMood;
     private String mMoodLang;
     private MediaPlayer mSound;
     public static Animation mShake;
@@ -110,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
     public static Animation mFadeIn;
     public static Animation mFadeOut;
     public static Animation mSlideIn;
-
 
     /**
      * Setting the Main mood view, with smileys and buttons.
@@ -126,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         animSet();
         loadData();
         setMoodOnSwipe();
-        screenSize();
 
         mFrame.setOnTouchListener(new OnSwipeTouchListener(this) {      //  Swipe listener
             @Override
@@ -177,11 +171,9 @@ public class MainActivity extends AppCompatActivity {
     void onClickNote() {
         mNote.startAnimation(mFadeOut);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
         alert.setTitle(mCommentary);
         alert.setMessage(mDescriptionNote);
 
-// Set an EditText view to get user input
         final EditText input = new EditText(this);
         alert.setView(input);
         if (mAddNote != null) {
@@ -216,18 +208,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.activity_main_share)
     void onClickShare() {
-        shareClick();   // share btn
-    }
-
-    /**
-     * Method to initiate/stop animations and sound on swipe.
-     */
-    private void swipeAnim() {
-        mSound.stop();  // stop sound created with swipe movement
-        mSound.release();
-        setMoodOnSwipe(); // Set the mood view
-        mSmiley.startAnimation(mFadeIn);
-        mFrame.startAnimation(mFadeIn);
+        shareClick();
     }
 
     /**
@@ -243,12 +224,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Method to initiate/stop animations and sound on swipe.
+     */
+    private void swipeAnim() {
+        mSound.stop();  // stop sound created with swipe movement
+        mSound.release();
+        setMoodOnSwipe(); // Set the mood view
+        mSmiley.startAnimation(mFadeIn);
+        mFrame.startAnimation(mFadeIn);
+    }
+
+    /**
      * Saving all necessary values.
      *
      * @see Gson
      * @see MoodSave
      */
-    private void saveData() {    // save SharedPreferences and mLastDay
+    public void saveData() {    // save SharedPreferences and mLastDay
         SharedPreferences mFirstLaunchToday = getSharedPreferences(SPLaunch, MODE_PRIVATE);
         SharedPreferences.Editor firstLaunch = mFirstLaunchToday.edit();
         firstLaunch.putInt(SPLaunchToday, mLastDay);
@@ -287,70 +279,24 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<List<MoodSave>>() {
         }.getType();
         mMoodSaveList = gson.fromJson(json, type);
-        listCreate();   // create a first list if first launch or deleted list
-        saveMover();    // move items on past 7 day if it is a new day
+        ListHandler.listCreate();   // create a first list if first launch or deleted list
+        ListHandler.saveMover();    // move items on past 7 day if it is a new day + reset mood
         checkLaunchToday();  // update and check the day
+        saveData();
     }
 
-    /**
-     * Create a first list if first launch or deleted list.
-     */
-    private void listCreate() {
-        if (mMoodSaveList == null) {
-            mMoodSaveList = new ArrayList<>();
-            mMoodSaveList.add(0, new MoodSave(getToday() - 8, 5, false, null));
-            mMoodSaveList.add(1, new MoodSave(getToday() - 8, 5, false, null));
-            mMoodSaveList.add(2, new MoodSave(getToday() - 8, 5, false, null));
-            mMoodSaveList.add(3, new MoodSave(getToday() - 8, 5, false, null));
-            mMoodSaveList.add(4, new MoodSave(getToday() - 8, 5, false, null));
-            mMoodSaveList.add(5, new MoodSave(getToday() - 8, 5, false, null));
-            mMoodSaveList.add(6, new MoodSave(getToday() - 8, 5, false, null));
-            mMoodSaveList.add(7, new MoodSave(getToday(), 3, false, null));
-            saveData();
-        }
-    }
     private void listCreateTest() {
 
-            mMoodSaveList = new ArrayList<>();
-            mMoodSaveList.add(0, new MoodSave(getToday() - 7, 0, true, "test"));
-            mMoodSaveList.add(1, new MoodSave(getToday() - 6, 1, true, "test"));
-            mMoodSaveList.add(2, new MoodSave(getToday() - 5, 2, true, "test"));
-            mMoodSaveList.add(3, new MoodSave(getToday() - 4, 3, true, "test"));
-            mMoodSaveList.add(4, new MoodSave(getToday() - 6, 4, true, "test"));
-            mMoodSaveList.add(5, new MoodSave(getToday() - 2, 0, true, "test"));
-            mMoodSaveList.add(6, new MoodSave(getToday() - 1, 1, true, "test"));
-            mMoodSaveList.add(7, new MoodSave(getToday(), 3, false, null));
-            saveData();
-    }
-
-    /**
-     * Move items on past 7 day if it is a new day.<br>
-     * <mark>(note: works if launch from 1st January to 7th)</mark>
-     */
-    private void saveMover() {
-        int today = getToday();
-        int dayLeft = today - mLastDay;
-
-        if (today >= 1 && today <= 7) { //    For the first week of the year
-            today = today + 365;
-        }
-        if (today != mLastDay && mLastDay != 0) { //  Set +1 position in history view
-            do {
-                mMoodSaveList.set(0, mMoodSaveList.get(1));
-                mMoodSaveList.set(1, mMoodSaveList.get(2));
-                mMoodSaveList.set(2, mMoodSaveList.get(3));
-                mMoodSaveList.set(3, mMoodSaveList.get(4));
-                mMoodSaveList.set(4, mMoodSaveList.get(5));
-                mMoodSaveList.set(5, mMoodSaveList.get(6));
-                mMoodSaveList.set(6, mMoodSaveList.get(7)); //  The last saved mood
-                mMoodSaveList.remove(7);
-                mMoodSaveList.add(7, new MoodSave((today - dayLeft) + 1, 3, false, null));
-                mLastDay++;
-                dayLeft--;
-            }
-            while (mLastDay < today);
-        }
-        resetMood();
+        mMoodSaveList = new ArrayList<>();
+        mMoodSaveList.add(0, new MoodSave(getToday() - 7, 0, true, "test"));
+        mMoodSaveList.add(1, new MoodSave(getToday() - 6, 1, true, "test"));
+        mMoodSaveList.add(2, new MoodSave(getToday() - 5, 2, true, "test"));
+        mMoodSaveList.add(3, new MoodSave(getToday() - 4, 3, true, "test"));
+        mMoodSaveList.add(4, new MoodSave(getToday() - 6, 4, true, "test"));
+        mMoodSaveList.add(5, new MoodSave(getToday() - 2, 0, true, "test"));
+        mMoodSaveList.add(6, new MoodSave(getToday() - 1, 1, true, "test"));
+        mMoodSaveList.add(7, new MoodSave(getToday(), 3, false, null));
+        saveData();
     }
 
     /**
@@ -367,9 +313,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Reset mood view and note when launch on new day
      */
-    private void resetMood() {
+    public static void resetMood() {
         mMood = 3;              // set mood happy
-        mAddNote = null;        // set note null
+        mAddNote = null;        // reset note
         mIsNote = false;
     }
 
@@ -420,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Method called for automatic save on swipe.
      */
@@ -449,19 +394,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mMoodSaveList.remove(7);
         mMoodSaveList.add(7, new MoodSave(getToday(), mMood, mIsNote, mAddNote));
-    }
-
-    /**
-     * Method to get the device dispay size for History use.
-     *
-     * @see com.aceman.moodtracker.model.HistoryAdapter
-     */
-    void screenSize() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        mWidth = size.x;
-        mHeight = size.y;
     }
 
     /**

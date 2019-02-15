@@ -1,8 +1,10 @@
-package com.aceman.moodtracker.UI;
+package com.aceman.moodtracker.ui;
 
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.widget.ListView;
 
 import com.aceman.moodtracker.R;
@@ -31,6 +33,8 @@ public class HistoryActivity extends AppCompatActivity {
     @BindView(R.id.list_view)
     ListView mMoodDayListView;
     private List<MoodSave> mMoodSaveList;
+    public static int mWidth;
+    public static int mHeight;
 
     /**
      * Setting the adapter with the List.
@@ -43,6 +47,7 @@ public class HistoryActivity extends AppCompatActivity {
         loadData();
         setContentView(R.layout.adapter_history);
         ButterKnife.bind(this);
+        screenSize();
         mMoodDayListView.setAdapter(new HistoryAdapter(this, mMoodSaveList.subList(0, 7)));    // To get only 7 days
 
     }
@@ -72,4 +77,16 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to get the device dispay size for History use.
+     *
+     * @see com.aceman.moodtracker.model.HistoryAdapter
+     */
+    void screenSize() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        mWidth = size.x;
+        mHeight = size.y;
+    }
 }

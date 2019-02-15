@@ -19,8 +19,11 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.aceman.moodtracker.UI.MainActivity.*;
 import static com.aceman.moodtracker.model.MoodSave.getToday;
+import static com.aceman.moodtracker.ui.HistoryActivity.mHeight;
+import static com.aceman.moodtracker.ui.HistoryActivity.mWidth;
+import static com.aceman.moodtracker.ui.MainActivity.mFadeOut;
+import static com.aceman.moodtracker.ui.MainActivity.mSlideIn;
 
 /**
  * Adapter for the history view, get MoodSave ListView via inflater.
@@ -28,7 +31,7 @@ import static com.aceman.moodtracker.model.MoodSave.getToday;
  * @author Aceman
  * Created by Lionel JOFFRAY - on 18/01/2019.
  * @see MoodSave
- * @see com.aceman.moodtracker.UI.HistoryActivity
+ * @see com.aceman.moodtracker.ui.HistoryActivity
  */
 public class HistoryAdapter extends BaseAdapter {
 
@@ -103,7 +106,7 @@ public class HistoryAdapter extends BaseAdapter {
         String NoteWrite = actualItem.getAddNote();
         setDayOfWeek(Day, holder.DayView, holder);
         noteShow(Note, NoteWrite, holder.NoteBtn);
-        moodColorBack(Mood, holder.HistoryBack);
+        moodColorBack(Mood, holder.HistoryBack, holder.DayView, holder.NoteBtn);
         return view;
     }
 
@@ -113,38 +116,38 @@ public class HistoryAdapter extends BaseAdapter {
      * @param mood        get the mood saved
      * @param historyBack set the background color for the mood
      */
-    private void moodColorBack(int mood, LinearLayout historyBack) {
+    private void moodColorBack(int mood, LinearLayout historyBack, TextView dayView, ImageButton noteBtn) {
 
         switch (mood) {
             case 0:
                 historyBack.setBackgroundResource(R.color.faded_red);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth/5, (mHeight)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth / 5, (mHeight) / 7));
                 historyBack.startAnimation(mSlideIn);
                 break;
             case 1:
                 historyBack.setBackgroundResource(R.color.warm_grey);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth/5)*2, (mHeight)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth / 5) * 2, (mHeight) / 7));
                 historyBack.startAnimation(mSlideIn);
                 break;
             case 2:
                 historyBack.setBackgroundResource(R.color.cornflower_blue_65);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth/5)*3, (mHeight)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth / 5) * 3, (mHeight) / 7));
                 historyBack.startAnimation(mSlideIn);
                 break;
             case 3:
                 historyBack.setBackgroundResource(R.color.light_sage);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth/5)*4, (mHeight)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams((mWidth / 5) * 4, (mHeight) / 7));
                 historyBack.startAnimation(mSlideIn);
                 break;
             case 4:
                 historyBack.setBackgroundResource(R.color.banana_yellow);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight)/7));
+                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight) / 7));
                 historyBack.startAnimation(mSlideIn);
                 break;
             default:
-                historyBack.setBackgroundResource(R.color.darker_gray);
-                historyBack.setLayoutParams(new AbsListView.LayoutParams(mWidth, (mHeight)/7));
-                historyBack.startAnimation(mSlideIn);
+                historyBack.setVisibility(View.GONE);
+                dayView.setVisibility(View.GONE);
+                noteBtn.setVisibility(View.GONE);
         }
     }
 

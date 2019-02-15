@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout android:id="@+id/mood_color"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mood_color"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="start"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    android:layout_gravity="top"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/history_day_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         android:layout_gravity="start"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:text=""
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
 
 
     <ImageButton
@@ -26,9 +25,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:src="@drawable/ic_comment_black_48px"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"/>
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_comment_black_48px" />
 
 </LinearLayout>
