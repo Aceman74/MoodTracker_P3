@@ -1,4 +1,4 @@
-package com.aceman.moodtracker.model;
+package com.aceman.moodtracker.data;
 
 import java.util.Calendar;
 
@@ -44,19 +44,19 @@ public class MoodSave {
         return calendar.get(Calendar.DAY_OF_YEAR);
     }
 
-    int getDay() {
+   public int getDay() {
         return mDay;
     }
 
-    int getMood() {
+    public int getMood() {
         return mMood;
     }
 
-    boolean getNote() {
+    public boolean getNote() {
         return mNote;
     }
 
-    String getAddNote() {
+    public String getAddNote() {
         return mAddNote;
     }
 }

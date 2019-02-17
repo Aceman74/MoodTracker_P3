@@ -34,5 +34,6 @@
     <string name="example_1">Qué mal día !</string>
     <string name="example_2">Es un buen día !</string>
     <string name="example_3">Qué mal tiempo …</string>
+    <string name="history_empty">Storia es vida !</string>
 
 </resources>

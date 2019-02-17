@@ -1,4 +1,4 @@
-package com.aceman.moodtracker.ui;
+package com.aceman.moodtracker.utils;
 
 import android.content.Context;
 import android.view.GestureDetector;

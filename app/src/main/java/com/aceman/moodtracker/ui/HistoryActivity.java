@@ -8,8 +8,7 @@ import android.view.Display;
 import android.widget.ListView;
 
 import com.aceman.moodtracker.R;
-import com.aceman.moodtracker.model.HistoryAdapter;
-import com.aceman.moodtracker.model.MoodSave;
+import com.aceman.moodtracker.data.MoodSave;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -80,7 +79,7 @@ public class HistoryActivity extends AppCompatActivity {
     /**
      * Method to get the device dispay size for History use.
      *
-     * @see com.aceman.moodtracker.model.HistoryAdapter
+     * @see HistoryAdapter
      */
     void screenSize() {
         Display display = getWindowManager().getDefaultDisplay();

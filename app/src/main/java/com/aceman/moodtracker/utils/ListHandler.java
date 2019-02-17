@@ -1,9 +1,11 @@
-package com.aceman.moodtracker.model;
+package com.aceman.moodtracker.utils;
 
+
+import com.aceman.moodtracker.data.MoodSave;
 
 import java.util.ArrayList;
 
-import static com.aceman.moodtracker.model.MoodSave.getToday;
+import static com.aceman.moodtracker.data.MoodSave.getToday;
 import static com.aceman.moodtracker.ui.MainActivity.mLastDay;
 import static com.aceman.moodtracker.ui.MainActivity.mMoodSaveList;
 import static com.aceman.moodtracker.ui.MainActivity.resetMood;
@@ -15,6 +17,7 @@ import static com.aceman.moodtracker.ui.MainActivity.resetMood;
  */
 public class ListHandler {
 
+    public static boolean mFirstLaunch = false;
     /**
      * Create empty list on first launch.
      */
@@ -30,6 +33,7 @@ public class ListHandler {
             mMoodSaveList.add(6, new MoodSave(getToday() - 8, 5, false, null));
             mMoodSaveList.add(7, new MoodSave(getToday(), 3, false, null));
             resetMood();
+            mFirstLaunch = true;
         }
     }
 
@@ -60,6 +64,7 @@ public class ListHandler {
             }
             while (mLastDay < today);
             resetMood();
+            mFirstLaunch = false;
         }
     }
 }

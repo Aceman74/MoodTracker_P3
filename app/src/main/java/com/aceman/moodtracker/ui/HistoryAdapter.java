@@ -1,4 +1,4 @@
-package com.aceman.moodtracker.model;
+package com.aceman.moodtracker.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
+import com.aceman.moodtracker.data.MoodSave;
+import com.aceman.moodtracker.ui.HistoryActivity;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.aceman.moodtracker.model.MoodSave.getToday;
+import static com.aceman.moodtracker.data.MoodSave.getToday;
 import static com.aceman.moodtracker.ui.HistoryActivity.mHeight;
 import static com.aceman.moodtracker.ui.HistoryActivity.mWidth;
 import static com.aceman.moodtracker.ui.MainActivity.mFadeOut;
@@ -31,7 +33,7 @@ import static com.aceman.moodtracker.ui.MainActivity.mSlideIn;
  * @author Aceman
  * Created by Lionel JOFFRAY - on 18/01/2019.
  * @see MoodSave
- * @see com.aceman.moodtracker.ui.HistoryActivity
+ * @see HistoryActivity
  */
 public class HistoryAdapter extends BaseAdapter {
 

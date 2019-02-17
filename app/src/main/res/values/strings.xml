@@ -34,4 +34,5 @@
     <string name="example_1">What a bad day !</string>
     <string name="example_2">it\'\s a good day !</string>
     <string name="example_3">What a bad weather …</string>
+    <string name="history_empty">History is empty !</string>
 </resources>

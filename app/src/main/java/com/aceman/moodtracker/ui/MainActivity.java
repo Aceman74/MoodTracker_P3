@@ -15,13 +15,13 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.aceman.moodtracker.R;
-import com.aceman.moodtracker.model.ListHandler;
-import com.aceman.moodtracker.model.MoodSave;
+import com.aceman.moodtracker.utils.OnSwipeTouchListener;
+import com.aceman.moodtracker.utils.ListHandler;
+import com.aceman.moodtracker.data.MoodSave;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindString;
@@ -29,7 +29,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.aceman.moodtracker.model.MoodSave.getToday;
+import static com.aceman.moodtracker.utils.ListHandler.mFirstLaunch;
+import static com.aceman.moodtracker.data.MoodSave.getToday;
 
 /**
  * * MoodTracker<br>
@@ -86,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     String mNoteIsSaved;
     @BindString(R.string.note_empty)
     String mNoteEmpty;
+    @BindString(R.string.history_empty)
+    String mHistoryEmpty;
     final static String SPLaunch = "LaunchToday";
     final static String SPLaunchToday = "IsFirstLaunchToday";
     final static String SPMoodSave = "MoodSave";
@@ -162,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
         Intent HistoryActivity = new Intent(getApplicationContext(), HistoryActivity.class);
         startActivity(HistoryActivity); // show history
         overridePendingTransition(R.anim.slide_in_bot_right, R.anim.slide_out_bot_right);
+        if(mFirstLaunch){
+            Toast.makeText(this, mHistoryEmpty, Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -285,20 +291,6 @@ public class MainActivity extends AppCompatActivity {
         saveData();
     }
 
-    private void listCreateTest() {
-
-        mMoodSaveList = new ArrayList<>();
-        mMoodSaveList.add(0, new MoodSave(getToday() - 7, 0, true, "test"));
-        mMoodSaveList.add(1, new MoodSave(getToday() - 6, 1, true, "test"));
-        mMoodSaveList.add(2, new MoodSave(getToday() - 5, 2, true, "test"));
-        mMoodSaveList.add(3, new MoodSave(getToday() - 4, 3, true, "test"));
-        mMoodSaveList.add(4, new MoodSave(getToday() - 6, 4, true, "test"));
-        mMoodSaveList.add(5, new MoodSave(getToday() - 2, 0, true, "test"));
-        mMoodSaveList.add(6, new MoodSave(getToday() - 1, 1, true, "test"));
-        mMoodSaveList.add(7, new MoodSave(getToday(), 3, false, null));
-        saveData();
-    }
-
     /**
      * Check the first launch of the day.
      *
@@ -332,38 +324,34 @@ public class MainActivity extends AppCompatActivity {
                     mFrame.setBackgroundResource(R.color.faded_red);
                     mSmiley.setImageResource(R.drawable.smiley_sad);
                     mSound = MediaPlayer.create(this, R.raw.very_bad);
-                    onSmileyView();
                     break;
                 case 1:
                     mMoodLang = mMoodBad;
                     mFrame.setBackgroundResource(R.color.warm_grey);
                     mSmiley.setImageResource(R.drawable.smiley_disappointed);
                     mSound = MediaPlayer.create(this, R.raw.bad);
-                    onSmileyView();
                     break;
                 case 2:
                     mMoodLang = mMoodNormal;
                     mFrame.setBackgroundResource(R.color.cornflower_blue_65);
                     mSmiley.setImageResource(R.drawable.smiley_normal);
                     mSound = MediaPlayer.create(this, R.raw.normal);
-                    onSmileyView();
                     break;
                 case 3:
                     mMoodLang = mMoodHappy;
                     mFrame.setBackgroundResource(R.color.light_sage);
                     mSmiley.setImageResource(R.drawable.smiley_happy);
                     mSound = MediaPlayer.create(this, R.raw.happy);
-                    onSmileyView();
                     break;
                 case 4:
                     mMoodLang = mMoodVeryHappy;
                     mFrame.setBackgroundResource(R.color.banana_yellow);
                     mSmiley.setImageResource(R.drawable.smiley_super_happy);
                     mSound = MediaPlayer.create(this, R.raw.very_happy);
-                    onSmileyView();
                     break;
             }
         }
+        onSmileyView();
     }
 
     /**
